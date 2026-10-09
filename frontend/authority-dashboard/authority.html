@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SahaySetu | Authority Dashboard</title>
+
+    <link rel="stylesheet" href="authority.css">
+</head>
+
+<body>
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                S
+            </div>
+
+            <div>
+                <h2>SahaySetu</h2>
+                <span>Authority Portal</span>
+            </div>
+
+        </div>
+
+
+        <nav class="navigation">
+
+            <button
+                class="nav-item active"
+                onclick="showSection('dashboard', this)"
+            >
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </button>
+
+
+            <button
+                class="nav-item"
+                onclick="showSection('complaints', this)"
+            >
+                <span class="nav-icon">☷</span>
+                <span>Complaints</span>
+            </button>
+
+
+            <button
+                class="nav-item"
+                onclick="showSection('workers', this)"
+            >
+                <span class="nav-icon">♙</span>
+                <span>Workers</span>
+            </button>
+
+
+            <button
+                class="nav-item"
+                onclick="showSection('incidents', this)"
+            >
+                <span class="nav-icon">⚠</span>
+                <span>Incidents</span>
+            </button>
+
+
+            <button
+                class="nav-item"
+                onclick="showSection('reports', this)"
+            >
+                <span class="nav-icon">▤</span>
+                <span>Reports</span>
+            </button>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="help-box">
+
+                <div class="help-icon">
+                    ?
+                </div>
+
+                <div>
+                    <strong>Need Help?</strong>
+                    <p>Contact SahaySetu support.</p>
+                </div>
+
+            </div>
+
+
+            <button
+                class="logout-side"
+                onclick="logout()"
+            >
+                <span>↪</span>
+                Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- ================= MAIN AREA ================= -->
+
+    <div class="main-area">
+
+        <!-- HEADER -->
+
+        <header class="topbar">
+
+            <button
+                class="menu-button"
+                onclick="toggleSidebar()"
+            >
+                ☰
+            </button>
+
+
+            <div class="topbar-title">
+
+                <span>Authority Management System</span>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <button
+                    class="notification-button"
+                    title="Notifications"
+                >
+                    🔔
+                    <span class="notification-dot"></span>
+                </button>
+
+
+                <div class="profile">
+
+                    <div class="profile-avatar">
+                        A
+                    </div>
+
+                    <div class="profile-info">
+
+                        <strong>Authority</strong>
+
+                        <span id="authorityEmail">
+                            Logged in
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <main class="content">
+
+
+            <!-- ===================================== -->
+            <!-- DASHBOARD SECTION -->
+            <!-- ===================================== -->
+
+            <section
+                id="dashboard"
+                class="page-section active-section"
+            >
+
+                <div class="page-heading">
+
+                    <div>
+
+                        <p class="small-heading">
+                            OVERVIEW
+                        </p>
+
+                        <h1>Authority Dashboard</h1>
+
+                        <p>
+                            Monitor civic complaints and coordinate
+                            issue resolution across Ghaziabad.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="primary-button"
+                        onclick="loadComplaints()"
+                    >
+                        ↻ Refresh Data
+                    </button>
+
+                </div>
+
+
+
+                <!-- STATISTICS -->
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+
+                            <div class="stat-icon blue">
+                                ☷
+                            </div>
+
+                            <span class="stat-label">
+                                TOTAL
+                            </span>
+
+                        </div>
+
+                        <h2 id="totalComplaints">
+                            0
+                        </h2>
+
+                        <p>
+                            All complaints
+                        </p>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+
+                            <div class="stat-icon orange">
+                                !
+                            </div>
+
+                            <span class="stat-label">
+                                PENDING
+                            </span>
+
+                        </div>
+
+                        <h2 id="pendingComplaints">
+                            0
+                        </h2>
+
+                        <p>
+                            Need attention
+                        </p>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+
+                            <div class="stat-icon purple">
+                                ◷
+                            </div>
+
+                            <span class="stat-label">
+                                IN PROGRESS
+                            </span>
+
+                        </div>
+
+                        <h2 id="progressComplaints">
+                            0
+                        </h2>
+
+                        <p>
+                            Being resolved
+                        </p>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+
+                            <div class="stat-icon green">
+                                ✓
+                            </div>
+
+                            <span class="stat-label">
+                                RESOLVED
+                            </span>
+
+                        </div>
+
+                        <h2 id="resolvedComplaints">
+                            0
+                        </h2>
+
+                        <p>
+                            Successfully closed
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- MAIN DASHBOARD GRID -->
+
+                <div class="dashboard-grid">
+
+
+                    <!-- RECENT COMPLAINTS -->
+
+                    <div class="panel complaints-panel">
+
+                        <div class="panel-header">
+
+                            <div>
+
+                                <h2>Recent Complaints</h2>
+
+                                <p>
+                                    Latest civic issues reported
+                                </p>
+
+                            </div>
+
+                            <button
+                                class="text-button"
+                                onclick="showSectionById('complaints')"
+                            >
+                                View All →
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            id="recentComplaints"
+                            class="table-wrapper"
+                        >
+
+                            <div class="loading">
+                                Loading complaints...
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- PRIORITY -->
+
+                    <div class="panel priority-panel">
+
+                        <div class="panel-header">
+
+                            <div>
+
+                                <h2>Priority Overview</h2>
+
+                                <p>
+                                    Complaints requiring attention
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="priority-list">
+
+                            <div class="priority-item">
+
+                                <div class="priority-left">
+
+                                    <span class="priority-dot high"></span>
+
+                                    <span>High Priority</span>
+
+                                </div>
+
+                                <strong id="highPriority">
+                                    0
+                                </strong>
+
+                            </div>
+
+
+                            <div class="priority-item">
+
+                                <div class="priority-left">
+
+                                    <span class="priority-dot medium"></span>
+
+                                    <span>Medium Priority</span>
+
+                                </div>
+
+                                <strong id="mediumPriority">
+                                    0
+                                </strong>
+
+                            </div>
+
+
+                            <div class="priority-item">
+
+                                <div class="priority-left">
+
+                                    <span class="priority-dot low"></span>
+
+                                    <span>Low Priority</span>
+
+                                </div>
+
+                                <strong id="lowPriority">
+                                    0
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="priority-note">
+
+                            <strong>Smart monitoring</strong>
+
+                            <p>
+                                Prioritize complaints based on
+                                severity and community impact.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUICK ACTIONS -->
+
+                <div class="panel quick-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <h2>Quick Actions</h2>
+
+                            <p>
+                                Frequently used authority tools
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="quick-actions">
+
+                        <button
+                            onclick="showSectionById('complaints')"
+                            class="quick-action"
+                        >
+
+                            <span class="quick-icon blue-bg">
+                                ☷
+                            </span>
+
+                            <div>
+                                <strong>Manage Complaints</strong>
+                                <span>
+                                    Review and monitor complaints
+                                </span>
+                            </div>
+
+                        </button>
+
+
+                        <button
+                            onclick="showSectionById('workers')"
+                            class="quick-action"
+                        >
+
+                            <span class="quick-icon purple-bg">
+                                ♙
+                            </span>
+
+                            <div>
+                                <strong>Manage Workers</strong>
+                                <span>
+                                    View worker assignments
+                                </span>
+                            </div>
+
+                        </button>
+
+
+                        <button
+                            onclick="showSectionById('incidents')"
+                            class="quick-action"
+                        >
+
+                            <span class="quick-icon orange-bg">
+                                ⚠
+                            </span>
+
+                            <div>
+                                <strong>Incident Analysis</strong>
+                                <span>
+                                    Identify related complaints
+                                </span>
+                            </div>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ===================================== -->
+            <!-- COMPLAINTS SECTION -->
+            <!-- ===================================== -->
+
+            <section
+                id="complaints"
+                class="page-section"
+            >
+
+                <div class="page-heading">
+
+                    <div>
+
+                        <p class="small-heading">
+                            CASE MANAGEMENT
+                        </p>
+
+                        <h1>Complaints</h1>
+
+                        <p>
+                            Review and monitor civic complaints.
+                        </p>
+
+                    </div>
+
+                    <button
+                        class="primary-button"
+                        onclick="loadComplaints()"
+                    >
+                        ↻ Refresh
+                    </button>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="filter-bar">
+
+                        <div class="search-box">
+
+                            <span>⌕</span>
+
+                            <input
+                                type="text"
+                                id="searchInput"
+                                placeholder="Search complaints..."
+                                oninput="filterComplaints()"
+                            >
+
+                        </div>
+
+
+                        <select
+                            id="statusFilter"
+                            onchange="filterComplaints()"
+                        >
+
+                            <option value="all">
+                                All Status
+                            </option>
+
+                            <option value="pending">
+                                Pending
+                            </option>
+
+                            <option value="progress">
+                                In Progress
+                            </option>
+
+                            <option value="resolved">
+                                Resolved
+                            </option>
+
+                        </select>
+
+
+                        <select
+                            id="priorityFilter"
+                            onchange="filterComplaints()"
+                        >
+
+                            <option value="all">
+                                All Priority
+                            </option>
+
+                            <option value="high">
+                                High
+                            </option>
+
+                            <option value="medium">
+                                Medium
+                            </option>
+
+                            <option value="low">
+                                Low
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div
+                        id="complaintsTable"
+                        class="table-wrapper"
+                    >
+
+                        <div class="loading">
+                            Loading complaints...
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ===================================== -->
+            <!-- WORKERS SECTION -->
+            <!-- ===================================== -->
+
+            <section
+                id="workers"
+                class="page-section"
+            >
+
+                <div class="page-heading">
+
+                    <div>
+
+                        <p class="small-heading">
+                            FIELD OPERATIONS
+                        </p>
+
+                        <h1>Workers</h1>
+
+                        <p>
+                            Manage worker assignments and field operations.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="empty-feature">
+
+                    <div class="feature-icon">
+                        ♙
+                    </div>
+
+                    <h2>Worker Management</h2>
+
+                    <p>
+                        Worker assignment will be connected to the
+                        Authority API here.
+                    </p>
+
+                    <span>
+                        API: PUT /authority/complaints/{complaint_id}/assign
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ===================================== -->
+            <!-- INCIDENTS SECTION -->
+            <!-- ===================================== -->
+
+            <section
+                id="incidents"
+                class="page-section"
+            >
+
+                <div class="page-heading">
+
+                    <div>
+
+                        <p class="small-heading">
+                            SMART INCIDENT MANAGEMENT
+                        </p>
+
+                        <h1>Incident Analysis</h1>
+
+                        <p>
+                            Identify relationships between complaints
+                            and combine related reports.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="feature-grid">
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon orange-icon">
+                            ⚡
+                        </div>
+
+                        <h2>Complaint Fusion</h2>
+
+                        <p>
+                            Combine related complaints into a
+                            single incident for better coordination.
+                        </p>
+
+                        <span>
+                            POST /authority/incidents/fuse/{complaint_id}
+                        </span>
+
+                    </div>
+
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon blue-icon">
+                            ◉
+                        </div>
+
+                        <h2>Relationships</h2>
+
+                        <p>
+                            View complaints and issues related to
+                            an existing incident.
+                        </p>
+
+                        <span>
+                            GET /authority/incidents/{incident_id}/relationships
+                        </span>
+
+                    </div>
+
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon green-icon">
+                            ✓
+                        </div>
+
+                        <h2>Interventions</h2>
+
+                        <p>
+                            Monitor actions taken to resolve
+                            identified incidents.
+                        </p>
+
+                        <span>
+                            GET /authority/incidents/{incident_id}/interventions
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ===================================== -->
+            <!-- REPORTS SECTION -->
+            <!-- ===================================== -->
+
+            <section
+                id="reports"
+                class="page-section"
+            >
+
+                <div class="page-heading">
+
+                    <div>
+
+                        <p class="small-heading">
+                            ANALYTICS
+                        </p>
+
+                        <h1>Reports</h1>
+
+                        <p>
+                            Monitor complaint resolution performance.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="report-grid">
+
+                    <div class="report-card">
+
+                        <span>Total Complaints</span>
+
+                        <strong id="reportTotal">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-card">
+
+                        <span>Pending Cases</span>
+
+                        <strong id="reportPending">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-card">
+
+                        <span>Resolved Cases</span>
+
+                        <strong id="reportResolved">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="authority.js"></script>
+
+</body>
+
+</html>
