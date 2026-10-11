@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
+from related_incidents_ml import find_related_incidents
 
 from sqlalchemy.orm import Session
 
@@ -124,17 +125,13 @@ def create_complaint(
     new_complaint = Complaint(
         complaint_id=f"CMP-{uuid.uuid4().hex[:8].upper()}",
         user_id=current_user.id,
-
         description=complaint.description,
         category=complaint.category,
         severity=complaint.severity,
-
         latitude=complaint.latitude,
         longitude=complaint.longitude,
-
         photo_url=complaint.photo_url,
         audio_url=complaint.audio_url,
-
         status="SUBMITTED"
     )
 
@@ -142,7 +139,23 @@ def create_complaint(
     db.commit()
     db.refresh(new_complaint)
 
-    return new_complaint
+    historical_complaints = db.query(Complaint).filter(
+        Complaint.id != new_complaint.id
+    ).all()
+
+    try:
+        related_incidents = find_related_incidents(
+            new_complaint,
+            historical_complaints
+        )
+    except Exception as error:
+        print(f"Related-incident ML analysis failed: {error}")
+        related_incidents = []
+
+    return {
+        "complaint": new_complaint,
+        "related_incidents": related_incidents
+    }
 
 @app.get(
     "/complaints/my",
@@ -159,6 +172,44 @@ def get_my_complaints(
     ).all()
 
     return complaints
+
+@app.get("/complaints/{complaint_id}/related")
+def get_related_complaints(
+    complaint_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    complaint = db.query(Complaint).filter(
+        Complaint.complaint_id == complaint_id
+    ).first()
+
+    if complaint is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Complaint not found"
+        )
+
+    if current_user.role not in ["AUTHORITY", "ADMIN"]:
+        if complaint.user_id != current_user.id:
+            raise HTTPException(
+                status_code=403,
+                detail="Not authorized to view these results"
+            )
+
+    historical_complaints = db.query(Complaint).filter(
+        Complaint.id != complaint.id
+    ).all()
+
+    results = find_related_incidents(
+        complaint,
+        historical_complaints
+    )
+
+    return {
+        "complaint_id": complaint.complaint_id,
+        "related_count": len(results),
+        "related_incidents": results
+    }
 
 @app.get(
     "/complaints/{complaint_id}",
