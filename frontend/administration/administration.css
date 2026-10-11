@@ -1032,3 +1032,64 @@ td {
     }
 
 }
+
+
+/* ========================================
+   SAHAYSETU — COMPLAINT TABLE ENHANCEMENTS
+======================================== */
+
+.severity-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.severity-high {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.severity-medium {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.severity-low {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.severity-unknown {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.location-link {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.location-link:hover {
+    text-decoration: underline;
+}
+
+.complaint-id {
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.complaint-description {
+    min-width: 220px;
+    line-height: 1.6;
+}
+
+.stats-loading {
+    visibility: hidden;
+}

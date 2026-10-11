@@ -34,6 +34,63 @@ async function loadUsersFromBackend() {
 
     displayUsers(users);
 }
+
+async function loadComplaintsFromBackend() {
+    const token = localStorage.getItem("access_token");
+
+    const response = await fetch(
+        API_URL + "/admin/complaints",
+        {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error("Failed to load complaints");
+    }
+
+    const data = await response.json();
+
+    complaints.length = 0;
+
+    data.forEach(function (complaint) {
+        complaints.push({
+            id: complaint.complaint_id,
+            title: complaint.description,
+            location:
+                complaint.latitude != null &&
+                complaint.longitude != null
+                    ? complaint.latitude + ", " + complaint.longitude
+                    : "Location unavailable",
+            priority: complaint.severity,
+            status: complaint.status
+        });
+    });
+
+    displayRecentComplaints();
+    updateComplaintStatistics();
+    document.querySelector(".stats-grid")?.classList.remove("stats-loading");
+}
+
+function updateComplaintStatistics() {
+    const total = complaints.length;
+
+    const completed = complaints.filter(function (complaint) {
+        return String(complaint.status).toUpperCase() === "COMPLETED";
+    }).length;
+
+    const pending = complaints.filter(function (complaint) {
+        return ["SUBMITTED", "PENDING"].includes(
+            String(complaint.status).toUpperCase()
+        );
+    }).length;
+
+    document.getElementById("totalComplaints").textContent = total;
+    document.getElementById("resolvedComplaints").textContent = completed;
+    document.getElementById("pendingComplaints").textContent = pending;
+}
 // ==========================================
 // SAHAYSETU ADMINISTRATION DASHBOARD
 // FRONTEND DEMO VERSION
@@ -101,80 +158,32 @@ const users = [
 // SAMPLE COMPLAINTS
 // ==========================================
 
-const complaints = [
 
-    {
-        id: "C001",
-        title: "Large pothole on main road",
-        location: "Raj Nagar, Ghaziabad",
-        priority: "High",
-        status: "Pending"
-    },
-
-    {
-        id: "C002",
-        title: "Streetlight not working",
-        location: "Indirapuram, Ghaziabad",
-        priority: "Medium",
-        status: "In Progress"
-    },
-
-    {
-        id: "C003",
-        title: "Open drain near residential area",
-        location: "Vaishali, Ghaziabad",
-        priority: "High",
-        status: "Resolved"
-    },
-
-    {
-        id: "C004",
-        title: "Garbage collection issue",
-        location: "Vasundhara, Ghaziabad",
-        priority: "Medium",
-        status: "Pending"
-    },
-
-    {
-        id: "C005",
-        title: "Broken footpath",
-        location: "Crossings Republik",
-        priority: "Low",
-        status: "Resolved"
-    },
-
-    {
-        id: "C006",
-        title: "Water leakage on road",
-        location: "Kavi Nagar, Ghaziabad",
-        priority: "High",
-        status: "In Progress"
-    }
-
-];
+let complaints = [];
 
 
 // ==========================================
 // PAGE LOAD
 // ==========================================
 
+
 document.addEventListener(
     "DOMContentLoaded",
     async function () {
-
-        displayRecentComplaints();
-
-        displayComplaints(complaints);
-
         try {
-            await loadUsersFromBackend();
+            await Promise.all([
+                loadUsersFromBackend(),
+                loadComplaintsFromBackend()
+            ]);
+
+            displayComplaints(complaints);
         } catch (error) {
-            console.error("Error loading users:", error);
+            console.error("Error loading dashboard data:", error);
+
             alert(
-                "Could not load users. Please log in again or check the backend."
+                "Could not load dashboard data. Please check your login and backend."
             );
         }
-
     }
 );
 
@@ -332,48 +341,56 @@ function updatePageTitle(sectionId) {
 // RECENT COMPLAINTS
 // ==========================================
 
+
+
+function getSeverityHTML(severity) {
+    const level = String(severity || "UNKNOWN").toUpperCase();
+    const allowedLevels = ["HIGH", "MEDIUM", "LOW"];
+    const safeLevel = allowedLevels.includes(level) ? level : "UNKNOWN";
+
+    return `<span class="severity-badge severity-${safeLevel.toLowerCase()}">
+        ${safeLevel}
+    </span>`;
+}
+
 function displayRecentComplaints() {
+    const table = document.getElementById("recentComplaints");
 
-    const table =
-        document.getElementById(
-            "recentComplaints"
-        );
-
+    if (!table) {
+        console.error("Recent complaints table not found.");
+        return;
+    }
 
     table.innerHTML = "";
 
+    const recent = complaints.slice(0, 5);
 
-    const recent =
-        complaints.slice(0, 5);
+    recent.forEach(function (complaint) {
+        const row = document.createElement("tr");
 
+        const hasLocation =
+            complaint.location &&
+            complaint.location !== "Location unavailable";
 
-    recent.forEach(
-        function (complaint) {
+        const locationHTML = hasLocation
+            ? `<a class="location-link"
+                  href="https://www.google.com/maps?q=${encodeURIComponent(complaint.location)}"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  ${complaint.location} ↗
+               </a>`
+            : "Location unavailable";
 
-            const row =
-                document.createElement("tr");
+        row.innerHTML = `
+            <td class="complaint-id">${complaint.id}</td>
+            <td class="complaint-description">${complaint.title}</td>
+            <td>${getSeverityHTML(complaint.priority)}</td>
+            <td>${locationHTML}</td>
+            <td>${getStatusHTML(complaint.status)}</td>
+        `;
 
-
-            row.innerHTML = `
-
-                <td>${complaint.id}</td>
-
-                <td>${complaint.title}</td>
-
-                <td>${complaint.location}</td>
-
-                <td>
-                    ${getStatusHTML(complaint.status)}
-                </td>
-
-            `;
-
-
-            table.appendChild(row);
-
-        }
-    );
-
+        table.appendChild(row);
+    });
 }
 
 

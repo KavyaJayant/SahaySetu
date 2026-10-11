@@ -4,3 +4,9 @@ backend/**pycache**/
 .env
 **/**pycache**/
 **/.venv/
+# Flutter generated files and local build output
+mobile/.dart_tool/
+mobile/build/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/flutter_build_log.txt
