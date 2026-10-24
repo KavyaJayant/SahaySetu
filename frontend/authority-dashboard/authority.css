@@ -1260,6 +1260,192 @@ body {
 
 
 /* ==========================================
+   WORKER ASSIGNMENTS
+   ========================================== */
+
+.worker-stats {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.assignment-panel {
+    margin-bottom: 20px;
+}
+
+.assignment-controls {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) minmax(220px, 1fr) auto;
+    align-items: end;
+    gap: 14px;
+    padding: 20px;
+}
+
+.assignment-controls label,
+.category-filter-label {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+    color: #526174;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.assignment-controls select,
+.category-filter-label select {
+    width: 100%;
+    height: 42px;
+    padding: 0 11px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: white;
+    color: var(--text);
+    font: inherit;
+    font-weight: normal;
+}
+
+.assignment-controls .primary-button {
+    min-height: 42px;
+    white-space: nowrap;
+}
+
+.primary-button:disabled {
+    background: #a9b7c9;
+    cursor: not-allowed;
+}
+
+.assignment-info,
+.assignment-message {
+    margin: 0 20px;
+    padding: 12px 14px;
+    color: #526174;
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.assignment-info {
+    background: #f5f9ff;
+    border-radius: 7px;
+}
+
+.assignment-message {
+    min-height: 38px;
+    color: var(--blue);
+}
+
+.worker-table-header {
+    gap: 18px;
+}
+
+.category-filter-label {
+    min-width: 200px;
+}
+
+.worker-table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+}
+
+.worker-table th {
+    padding: 12px 16px;
+    background: #f8fafc;
+    border-bottom: 1px solid var(--border);
+    color: #8290a1;
+    font-size: 10px;
+    letter-spacing: .5px;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.worker-table td {
+    padding: 13px 16px;
+    border-bottom: 1px solid #edf1f5;
+    color: #4b5a6d;
+    font-size: 12px;
+    vertical-align: top;
+}
+
+.worker-name-cell strong {
+    display: block;
+    max-width: 270px;
+    overflow-wrap: anywhere;
+}
+
+.demo-label {
+    display: inline-block;
+    margin-top: 5px;
+    color: #66758a;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.worker-status {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.worker-active {
+    background: #e4f7ec;
+    color: #178144;
+}
+
+.worker-inactive {
+    background: #edf1f5;
+    color: #69788a;
+}
+
+.worker-details summary {
+    color: var(--blue);
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.worker-complaints {
+    width: min(760px, 68vw);
+    padding-top: 12px;
+}
+
+.worker-complaint-list {
+    display: grid;
+    gap: 8px;
+}
+
+.worker-complaint {
+    display: grid;
+    grid-template-columns: minmax(100px, 1fr) minmax(150px, 1.5fr) repeat(3, minmax(100px, 1fr));
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: #fbfdff;
+    color: #526174;
+    font-size: 11px;
+}
+
+.worker-complaint > * {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.worker-complaint strong {
+    color: var(--blue);
+}
+
+.worker-empty {
+    padding: 12px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+
+/* ==========================================
    MOBILE
    ========================================== */
 
@@ -1279,6 +1465,10 @@ body {
     .feature-grid {
         grid-template-columns:
             repeat(2, 1fr);
+    }
+
+    .worker-complaint {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
 }
@@ -1336,6 +1526,27 @@ body {
         grid-template-columns: 1fr;
     }
 
+    .worker-table-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .category-filter-label {
+        min-width: 0;
+    }
+
+    .assignment-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .assignment-controls .primary-button {
+        width: 100%;
+    }
+
+    .worker-complaints {
+        width: min(620px, 72vw);
+    }
+
 }
 
 
@@ -1366,4 +1577,105 @@ body {
         align-items: stretch;
     }
 
+}
+.incident-fusion-tool,
+.incident-analysis-panel {
+    margin: 18px 0;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--white);
+}
+
+.incident-fusion-tool label,
+.analysis-field label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text);
+    font-weight: 600;
+}
+
+.incident-fusion-controls,
+.analysis-form-row,
+.analysis-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.incident-fusion-controls select,
+.analysis-field input,
+.analysis-field select,
+.analysis-field textarea {
+    min-width: 180px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font: inherit;
+}
+
+.analysis-disclaimer {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.incident-analysis-panel h3 {
+    margin: 18px 0 8px;
+    font-size: 16px;
+}
+
+.incident-analysis-panel ul {
+    margin: 8px 0 8px 20px;
+}
+
+.incident-analysis-panel li {
+    margin: 6px 0;
+    line-height: 1.45;
+}
+
+.analysis-card {
+    margin-top: 10px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fbfcfe;
+}
+
+.analysis-card button,
+.incident-analysis-button {
+    min-height: 36px;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--white);
+    color: var(--blue);
+    cursor: pointer;
+}
+
+.analysis-error,
+.form-status.error {
+    color: var(--red);
+}
+
+.form-status.success {
+    color: var(--green);
+}
+
+@media (max-width: 640px) {
+    .incident-fusion-controls,
+    .analysis-form-row {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .incident-fusion-controls select,
+    .incident-fusion-controls button,
+    .analysis-field input,
+    .analysis-field select,
+    .analysis-field textarea {
+        width: 100%;
+    }
 }

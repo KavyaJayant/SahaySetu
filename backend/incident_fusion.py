@@ -2,6 +2,7 @@ from math import radians, sin, cos, sqrt, atan2
 from datetime import timedelta
 
 from models import Complaint
+from category_mapping import category_analysis_key
 
 
 # Maximum distance between complaints in metres
@@ -77,10 +78,12 @@ def are_categories_related(category1, category2):
     are considered related.
     """
 
-    related_categories = RELATED_CATEGORIES.get(
-        category1,
-        {category1}
-    )
+    category1 = category_analysis_key(category1)
+    category2 = category_analysis_key(category2)
+    if category1 is None or category2 is None:
+        return False
+
+    related_categories = RELATED_CATEGORIES.get(category1, {category1})
 
     return category2 in related_categories
 

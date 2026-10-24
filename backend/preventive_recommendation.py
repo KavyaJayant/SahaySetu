@@ -1,3 +1,6 @@
+from category_mapping import category_analysis_key
+
+
 PREVENTION_RULES = {
     "WATERLOGGING": {
         "recommendation": "PERIODIC_DRAINAGE_INSPECTION",
@@ -52,11 +55,13 @@ def generate_preventive_recommendations(
         return recommendations
 
     categories = set(
-        complaint.category
+        category_analysis_key(complaint.category)
         for complaint in complaints
     )
 
     for category in categories:
+        if category is None:
+            continue
         rule = PREVENTION_RULES.get(category)
 
         if rule is None:

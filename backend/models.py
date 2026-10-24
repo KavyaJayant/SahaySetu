@@ -1,4 +1,14 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
+from sqlalchemy import (
+    Boolean,
+    CheckConstraint,
+    Column,
+    DateTime,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    UniqueConstraint,
+)
 from database import Base
 from datetime import datetime
 
@@ -17,6 +27,8 @@ class User(Base):
     role = Column(String, nullable=False)
 
     is_active = Column(Integer, nullable=False, default=1)
+    worker_category = Column(String, nullable=True)
+    is_demo_worker = Column(Boolean, nullable=False, default=False)
 
 
 class Complaint(Base):
@@ -54,6 +66,61 @@ class Complaint(Base):
     ai_confidence = Column(Float, nullable=True)
 
     created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class ComplaintStatusHistory(Base):
+    __tablename__ = "complaint_status_history"
+
+    id = Column(Integer, primary_key=True, index=True)
+    complaint_id = Column(
+        Integer,
+        ForeignKey("complaints.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    event_type = Column(String(40), nullable=False)
+    status = Column(String(40), nullable=False)
+    changed_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    actor_user_id = Column(
+        Integer,
+        ForeignKey("users.id"),
+        nullable=False,
+    )
+    assigned_worker_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+
+
+class CitizenVerification(Base):
+    __tablename__ = "citizen_verifications"
+    __table_args__ = (
+        UniqueConstraint(
+            "completion_event_id",
+            name="uq_citizen_verifications_completion_event",
+        ),
+        CheckConstraint(
+            "(evidence_filename IS NULL AND evidence_content_type IS NULL) OR "
+            "(evidence_filename IS NOT NULL AND evidence_content_type IS NOT NULL)",
+            name="ck_citizen_verifications_evidence_pair",
+        ),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    complaint_id = Column(
+        Integer,
+        ForeignKey("complaints.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    completion_event_id = Column(
+        Integer,
+        ForeignKey("complaint_status_history.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    citizen_user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    result = Column(String(20), nullable=False)
+    feedback = Column(String(2000), nullable=True)
+    evidence_filename = Column(String(80), nullable=True)
+    evidence_content_type = Column(String(32), nullable=True)
+    submitted_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
 
 class Infrastructure(Base):
     __tablename__ = "infrastructure"

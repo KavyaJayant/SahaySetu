@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'dart:math' as math;
+import 'dart:typed_data';
 import 'api_service.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const SahaySetuApp());
@@ -36,6 +40,7 @@ class UserProfile {
   final String email;
   final String password;
   final String mobile;
+  final String role;
   final String? accessToken;
   String? profileImagePath;
 
@@ -44,6 +49,7 @@ class UserProfile {
     required this.email,
     required this.password,
     required this.mobile,
+    this.role = 'CITIZEN',
     this.accessToken,
     this.profileImagePath,
   });
@@ -104,6 +110,37 @@ class Complaint {
     this.isFusedIncident = false,
     DateTime? submissionTime,
   }) : submissionTime = submissionTime ?? DateTime.now();
+
+  factory Complaint.fromApi(
+    Map<String, dynamic> data, {
+    required String citizenEmail,
+  }) {
+    final complaintId = data['complaint_id']?.toString();
+    final status = data['status']?.toString();
+    final createdAt = data['created_at']?.toString();
+    final latitude = data['latitude'];
+    final longitude = data['longitude'];
+
+    if (complaintId == null ||
+        complaintId.isEmpty ||
+        status == null ||
+        createdAt == null ||
+        latitude is! num ||
+        longitude is! num) {
+      throw const FormatException('Complaint response is missing required data');
+    }
+
+    return Complaint(
+      id: complaintId,
+      category: data['category']?.toString() ?? 'Category not recorded',
+      description: data['description']?.toString() ?? '',
+      severity: data['severity']?.toString() ?? '',
+      location: '$latitude, $longitude',
+      status: status,
+      citizenEmail: citizenEmail,
+      submissionTime: DateTime.parse(createdAt),
+    );
+  }
 }
 
 class AppDatabase {
@@ -353,14 +390,12 @@ class _CitizenAuthScreenState extends State<CitizenAuthScreen> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final TextEditingController _fullNameController = TextEditingController();
-  final TextEditingController _mobileController = TextEditingController();
 
   void _clearFields() {
     _emailController.clear();
     _passwordController.clear();
     _confirmPasswordController.clear();
     _fullNameController.clear();
-    _mobileController.clear();
   }
 
   void _toggleAuthMode() {
@@ -380,6 +415,18 @@ class _CitizenAuthScreenState extends State<CitizenAuthScreen> {
           password: _passwordController.text,
         );
 
+        if (data['role'] != 'CITIZEN') {
+          throw Exception('This account is not a citizen account.');
+        }
+
+        final token = data['access_token'] as String;
+        final authenticatedUser = await ApiService.getCurrentUser(
+          token: token,
+        );
+        if (authenticatedUser['role'] != 'CITIZEN') {
+          throw Exception('This account is not a citizen account.');
+        }
+
         if (!mounted) return;
 
         final email = _emailController.text.trim();
@@ -389,7 +436,8 @@ class _CitizenAuthScreenState extends State<CitizenAuthScreen> {
           email: email,
           password: '',
           mobile: '',
-          accessToken: data['access_token'] as String?,
+          role: authenticatedUser['role'] as String,
+          accessToken: token,
         );
 
         _clearFields();
@@ -409,80 +457,30 @@ class _CitizenAuthScreenState extends State<CitizenAuthScreen> {
         );
       }
     } else {
-      _showOtpVerificationDialog(
-        onVerified: () async {
-          try {
-            await ApiService.register(
-              name: _fullNameController.text.trim(),
-              email: _emailController.text.trim(),
-              password: _passwordController.text,
-            );
+      try {
+        await ApiService.register(
+          name: _fullNameController.text.trim(),
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+        );
 
-            if (!mounted) return;
+        if (!mounted) return;
 
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Account created successfully! Please sign in.'),
-              ),
-            );
-
-            _toggleAuthMode();
-          } catch (e) {
-            if (!mounted) return;
-
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Registration failed: ${e.toString()}')),
-            );
-          }
-        },
-      );
-    }
-  }
-
-  void _showOtpVerificationDialog({required VoidCallback onVerified}) {
-    final TextEditingController otpController = TextEditingController();
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: const Text('OTP Verification'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'An OTP has been sent to ${_mobileController.text}. (Enter any 4 digits like 1234)',
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: otpController,
-              keyboardType: TextInputType.number,
-              maxLength: 4,
-              decoration: const InputDecoration(
-                labelText: 'Enter 4-digit OTP',
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              if (otpController.text.length == 4) {
-                Navigator.pop(context);
-                onVerified();
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Please enter a valid 4-digit OTP'),
-                  ),
-                );
-              }
-            },
-            child: const Text('Verify & Complete'),
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Account created successfully! Please sign in.'),
           ),
-        ],
-      ),
-    );
+        );
+
+        _toggleAuthMode();
+      } catch (e) {
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Registration failed: ${e.toString()}')),
+        );
+      }
+    }
   }
 
   @override
@@ -522,20 +520,6 @@ class _CitizenAuthScreenState extends State<CitizenAuthScreen> {
                       ? 'Enter your full name'
                       : null,
                 ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _mobileController,
-                  keyboardType: TextInputType.phone,
-                  maxLength: 10,
-                  decoration: const InputDecoration(
-                    labelText: 'Mobile Number',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (val) => val == null || val.length != 10
-                      ? 'Enter a valid 10-digit mobile number'
-                      : null,
-                ),
-                const SizedBox(height: 16),
               ],
               TextFormField(
                 controller: _emailController,
@@ -654,58 +638,8 @@ class _CitizenAuthScreenState extends State<CitizenAuthScreen> {
 // ==========================================
 // FORGOT PASSWORD SCREEN
 // ==========================================
-class ForgotPasswordScreen extends StatefulWidget {
+class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({super.key});
-
-  @override
-  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
-}
-
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  final TextEditingController _mobileController = TextEditingController();
-  bool otpSent = false;
-  bool _obscureNewPass = true;
-  final TextEditingController _otpController = TextEditingController();
-  final TextEditingController _newPasswordController = TextEditingController();
-
-  void _sendOtp() {
-    if (_mobileController.text.length == 10) {
-      setState(() => otpSent = true);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('OTP sent successfully to your mobile number!'),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter a valid 10-digit mobile number'),
-        ),
-      );
-    }
-  }
-
-  void _resetPassword() {
-    if (_otpController.text.length == 4 &&
-        _newPasswordController.text.length >= 8) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Password reset successfully! Please sign in with your new credentials.',
-          ),
-        ),
-      );
-      Navigator.pop(context);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Enter valid 4-digit OTP and secure password (min 8 chars).',
-          ),
-        ),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -717,53 +651,15 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Retrieve your account or reset password using your registered mobile number.',
+              'Password recovery is not available yet. No verification code '
+              'will be sent and your password cannot be changed here.',
               style: TextStyle(fontSize: 15, color: Colors.grey),
             ),
             const SizedBox(height: 20),
-            TextField(
-              controller: _mobileController,
-              keyboardType: TextInputType.phone,
-              maxLength: 10,
-              decoration: const InputDecoration(
-                labelText: 'Registered Mobile Number',
-                border: OutlineInputBorder(),
-              ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Return to sign in'),
             ),
-            const SizedBox(height: 10),
-            if (!otpSent)
-              ElevatedButton(onPressed: _sendOtp, child: const Text('Send OTP'))
-            else ...[
-              TextField(
-                controller: _otpController,
-                maxLength: 4,
-                decoration: const InputDecoration(
-                  labelText: 'Enter 4-digit OTP',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: _newPasswordController,
-                obscureText: _obscureNewPass,
-                decoration: InputDecoration(
-                  labelText: 'New Password',
-                  border: const OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscureNewPass ? Icons.visibility_off : Icons.visibility,
-                    ),
-                    onPressed: () =>
-                        setState(() => _obscureNewPass = !_obscureNewPass),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _resetPassword,
-                child: const Text('Update Password'),
-              ),
-            ],
           ],
         ),
       ),
@@ -783,16 +679,75 @@ class CitizenDashboardScreen extends StatefulWidget {
 }
 
 class _CitizenDashboardScreenState extends State<CitizenDashboardScreen> {
+  List<Complaint> _complaints = [];
+  bool _isLoadingComplaints = true;
+  String? _complaintLoadError;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadComplaints();
+  }
+
+  Future<void> _loadComplaints() async {
+    final token = widget.currentUser.accessToken;
+    if (token == null || token.isEmpty) {
+      setState(() {
+        _isLoadingComplaints = false;
+        _complaintLoadError = 'Please sign in again to load your complaints.';
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoadingComplaints = true;
+      _complaintLoadError = null;
+    });
+
+    try {
+      final records = await ApiService.getMyComplaints(token: token);
+      final complaints = records
+          .map(
+            (record) => Complaint.fromApi(
+              record,
+              citizenEmail: widget.currentUser.email,
+            ),
+          )
+          .toList(growable: false);
+      if (!mounted) return;
+      setState(() => _complaints = complaints);
+    } catch (error) {
+      if (!mounted) return;
+      setState(() => _complaintLoadError = _apiErrorMessage(error));
+    } finally {
+      if (mounted) {
+        setState(() => _isLoadingComplaints = false);
+      }
+    }
+  }
+
+  Future<void> _openComplaintDetails(String complaintId) async {
+    final verificationSaved = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CitizenComplaintDetailScreen(
+          accessToken: widget.currentUser.accessToken,
+          complaintId: complaintId,
+        ),
+      ),
+    );
+    if (verificationSaved == true) {
+      await _loadComplaints();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Your verification response was saved.')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final userComplaints = AppDatabase.complaints
-        .where(
-          (c) =>
-              c.citizenEmail.trim().toLowerCase() ==
-              widget.currentUser.email.trim().toLowerCase(),
-        )
-        .toList();
-
     return Scaffold(
       appBar: AppBar(title: const Text('Citizen Dashboard')),
       drawer: Drawer(
@@ -852,7 +807,7 @@ class _CitizenDashboardScreenState extends State<CitizenDashboardScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => PreviousComplaintsScreen(
-                      userEmail: widget.currentUser.email,
+                      accessToken: widget.currentUser.accessToken,
                     ),
                   ),
                 );
@@ -977,7 +932,7 @@ class _CitizenDashboardScreenState extends State<CitizenDashboardScreen> {
             children: [
               const Expanded(
                 child: Text(
-                  'Active Complaints',
+                  'My Complaints',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -985,7 +940,7 @@ class _CitizenDashboardScreenState extends State<CitizenDashboardScreen> {
               const SizedBox(width: 8),
               ElevatedButton.icon(
                 onPressed: () async {
-                  await Navigator.push(
+                  await Navigator.push<Complaint>(
                     context,
                     MaterialPageRoute(
                       builder: (context) => CreateComplaintScreen(
@@ -994,153 +949,121 @@ class _CitizenDashboardScreenState extends State<CitizenDashboardScreen> {
                       ),
                     ),
                   );
-                  setState(() {});
+                  await _loadComplaints();
                 },
                 icon: const Icon(Icons.add, size: 16),
-                label: const Text(
-                  'New Complaint',
-                  style: TextStyle(fontSize: 13),
-                ),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 10,
-                  ),
-                ),
+                label: const Text('New Complaint'),
+              ),
+              IconButton(
+                tooltip: 'Refresh complaints',
+                onPressed: _isLoadingComplaints ? null : _loadComplaints,
+                icon: const Icon(Icons.refresh),
               ),
             ],
           ),
           const SizedBox(height: 12),
-          userComplaints.isEmpty
-              ? const Padding(
-                  padding: EdgeInsets.only(top: 40),
-                  child: Center(
-                    child: Text(
-                      'No complaints filed yet. Tap "New Complaint" to report an issue.',
-                      style: TextStyle(color: Colors.grey),
-                    ),
+          if (_isLoadingComplaints)
+            const Padding(
+              padding: EdgeInsets.all(24),
+              child: Center(child: CircularProgressIndicator()),
+            )
+          else if (_complaintLoadError != null)
+            Column(
+              children: [
+                Text(
+                  'Unable to load your complaints: $_complaintLoadError',
+                  style: const TextStyle(color: Colors.redAccent),
+                ),
+                TextButton(
+                  onPressed: _loadComplaints,
+                  child: const Text('Try again'),
+                ),
+              ],
+            )
+          else if (_complaints.isEmpty)
+            const Padding(
+              padding: EdgeInsets.only(top: 40),
+              child: Center(
+                child: Text(
+                  'No server-recorded complaints yet. Tap "New Complaint" to report an issue.',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
+            )
+          else
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: _complaints.length,
+              itemBuilder: (context, index) {
+                final complaint = _complaints[index];
+                return Card(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                )
-              : ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: userComplaints.length,
-                  itemBuilder: (context, index) {
-                    final complaint = userComplaints[index];
-                    bool isAwaitingVerification =
-                        complaint.status == 'Resolved / Awaiting Verification';
-
-                    return Card(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  complaint.id,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: appTheme.primaryColor,
-                                  ),
+                            Expanded(
+                              child: Text(
+                                complaint.id,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: appTheme.primaryColor,
                                 ),
-                                Chip(
-                                  label: Text(
-                                    complaint.status,
-                                    style: const TextStyle(
-                                      fontSize: 11,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  backgroundColor: _getStatusColor(
-                                    complaint.status,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              complaint.category,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            Text(
-                              complaint.description,
-                              style: const TextStyle(color: Colors.white70),
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.location_on,
-                                  size: 14,
-                                  color: Colors.grey,
-                                ),
-                                const SizedBox(width: 4),
-                                Expanded(
-                                  child: Text(
-                                    complaint.location,
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            if (complaint.completionNote != null) ...[
-                              const Divider(height: 16),
-                              Text(
-                                'Worker Note: ${complaint.completionNote}',
+                            Chip(
+                              label: Text(
+                                complaint.status,
                                 style: const TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  fontSize: 13,
+                                  fontSize: 11,
+                                  color: Colors.white,
                                 ),
                               ),
-                            ],
-                            if (isAwaitingVerification) ...[
-                              const SizedBox(height: 12),
-                              SizedBox(
-                                width: double.infinity,
-                                child: ElevatedButton.icon(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.purple,
-                                    foregroundColor: Colors.white,
-                                  ),
-                                  onPressed: () async {
-                                    await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            CitizenFeedbackReviewScreen(
-                                              complaint: complaint,
-                                            ),
-                                      ),
-                                    );
-                                    setState(() {});
-                                  },
-                                  icon: const Icon(Icons.rate_review),
-                                  label: const Text(
-                                    'Review Work & Give Feedback',
-                                  ),
-                                ),
-                              ),
-                            ],
+                              backgroundColor: _getStatusColor(complaint.status),
+                            ),
                           ],
                         ),
-                      ),
-                    );
-                  },
-                ),
+                        const SizedBox(height: 4),
+                        Text(
+                          complaint.category,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(complaint.description),
+                        const SizedBox(height: 8),
+                        Text('Coordinates: ${complaint.location}'),
+                        Text(
+                          'Submitted: ${_formatComplaintDate(complaint.submissionTime)}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: TextButton.icon(
+                            onPressed: () => _openComplaintDetails(complaint.id),
+                            icon: const Icon(Icons.timeline, size: 18),
+                            label: const Text('View progress and verify'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
         ],
       ),
     );
@@ -1156,10 +1079,33 @@ class _CitizenDashboardScreenState extends State<CitizenDashboardScreen> {
         return Colors.purple;
       case 'Closed':
         return Colors.green;
+      case 'SUBMITTED':
+        return Colors.orange;
+      case 'ASSIGNED':
+        return Colors.blue;
+      case 'IN_PROGRESS':
+        return Colors.purple;
+      case 'COMPLETED':
+        return Colors.green;
       default:
         return Colors.grey;
     }
+
   }
+}
+
+String _formatComplaintDate(DateTime date) {
+  final localDate = date.toLocal();
+  final month = localDate.month.toString().padLeft(2, '0');
+  final day = localDate.day.toString().padLeft(2, '0');
+  return '$day/$month/${localDate.year}';
+}
+
+String _apiErrorMessage(Object error) {
+  if (error is ApiException && error.statusCode == 401) {
+    return 'Your session has expired or is no longer valid. Please sign in again.';
+  }
+  return error.toString();
 }
 
 // ==========================================
@@ -1512,78 +1458,879 @@ class _SettingsScreenState extends State<SettingsScreen> {
 // ==========================================
 // PREVIOUS COMPLAINTS SCREEN
 // ==========================================
-class PreviousComplaintsScreen extends StatelessWidget {
-  final String userEmail;
-  const PreviousComplaintsScreen({super.key, required this.userEmail});
+class PreviousComplaintsScreen extends StatefulWidget {
+  final String? accessToken;
+  const PreviousComplaintsScreen({super.key, required this.accessToken});
+
+  @override
+  State<PreviousComplaintsScreen> createState() =>
+      _PreviousComplaintsScreenState();
+}
+
+class _PreviousComplaintsScreenState extends State<PreviousComplaintsScreen> {
+  List<Map<String, dynamic>> _complaints = [];
+  bool _isLoading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadComplaints();
+  }
+
+  Future<void> _loadComplaints() async {
+    final token = widget.accessToken;
+    if (token == null || token.isEmpty) {
+      setState(() {
+        _isLoading = false;
+        _error = 'Please sign in again to load your complaint history.';
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    try {
+      final complaints = await ApiService.getMyComplaints(token: token);
+      if (!mounted) return;
+      setState(() => _complaints = complaints);
+    } catch (error) {
+      if (!mounted) return;
+      setState(() => _error = _apiErrorMessage(error));
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _openComplaintDetails(String complaintId) async {
+    final verificationSaved = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CitizenComplaintDetailScreen(
+          accessToken: widget.accessToken,
+          complaintId: complaintId,
+        ),
+      ),
+    );
+    if (verificationSaved == true) {
+      await _loadComplaints();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Your verification response was saved.')),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final pastComplaints = AppDatabase.complaints
-        .where(
-          (c) =>
-              c.citizenEmail.trim().toLowerCase() ==
-              userEmail.trim().toLowerCase(),
-        )
-        .toList();
+    Widget body;
+    if (_isLoading) {
+      body = const Center(child: CircularProgressIndicator());
+    } else if (_error != null) {
+      body = Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Unable to load complaint history: $_error',
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.redAccent),
+              ),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: _loadComplaints,
+                child: const Text('Try again'),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else if (_complaints.isEmpty) {
+      body = RefreshIndicator(
+        onRefresh: _loadComplaints,
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: const [
+            SizedBox(height: 180),
+            Center(child: Text('No server-recorded complaints yet.')),
+          ],
+        ),
+      );
+    } else {
+      body = RefreshIndicator(
+        onRefresh: _loadComplaints,
+        child: ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(16),
+          itemCount: _complaints.length,
+          itemBuilder: (context, index) {
+            final complaint = _complaints[index];
+            final createdAt = DateTime.tryParse(
+              complaint['created_at']?.toString() ?? '',
+            );
+            return Card(
+              margin: const EdgeInsets.only(bottom: 12),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'ID: ${complaint['complaint_id']}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: appTheme.primaryColor,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Category: ${complaint['category']}',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text('Status: ${complaint['status']}'),
+                    Text(
+                      'Coordinates: ${complaint['latitude']}, ${complaint['longitude']}',
+                    ),
+                    if (createdAt != null)
+                      Text('Submitted: ${_formatComplaintDate(createdAt)}'),
+                    const SizedBox(height: 4),
+                    Text(complaint['description']?.toString() ?? ''),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton.icon(
+                        onPressed: () => _openComplaintDetails(
+                          complaint['complaint_id']?.toString() ?? '',
+                        ),
+                        icon: const Icon(Icons.timeline, size: 18),
+                        label: const Text('View progress and verify'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      );
+    }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Previous Records & Complaints')),
-      body: pastComplaints.isEmpty
-          ? const Center(child: Text('No previous complaints recorded.'))
-          : ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: pastComplaints.length,
-              itemBuilder: (context, index) {
-                final c = pastComplaints[index];
-                return Card(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'ID: ${c.id}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: appTheme.primaryColor,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Category: ${c.category}',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text('Status: ${c.status}'),
-                        Text('Location: ${c.location}'),
-                        if (c.completionNote != null) ...[
-                          const SizedBox(height: 6),
-                          Text(
-                            'Resolution Note: ${c.completionNote}',
-                            style: const TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ],
-                        if (c.citizenRating != null) ...[
-                          const SizedBox(height: 4),
-                          Row(
-                            children: [
-                              const Text(
-                                'Rating Given: ',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                '${c.citizenRating} / 5 ⭐',
-                                style: const TextStyle(color: Colors.amber),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ],
+      appBar: AppBar(
+        title: const Text('Previous Records & Complaints'),
+        actions: [
+          IconButton(
+            tooltip: 'Refresh history',
+            onPressed: _isLoading ? null : _loadComplaints,
+            icon: const Icon(Icons.refresh),
+          ),
+        ],
+      ),
+      body: body,
+    );
+  }
+}
+
+class CitizenComplaintDetailScreen extends StatefulWidget {
+  final String? accessToken;
+  final String complaintId;
+
+  const CitizenComplaintDetailScreen({
+    super.key,
+    required this.accessToken,
+    required this.complaintId,
+  });
+
+  @override
+  State<CitizenComplaintDetailScreen> createState() =>
+      _CitizenComplaintDetailScreenState();
+}
+
+class _CitizenComplaintDetailScreenState
+    extends State<CitizenComplaintDetailScreen> {
+  final TextEditingController _feedbackController = TextEditingController();
+  final ImagePicker _imagePicker = ImagePicker();
+
+  Map<String, dynamic>? _detail;
+  XFile? _evidencePhoto;
+  Uint8List? _evidencePhotoBytes;
+  bool _isLoading = true;
+  bool _isSavingVerification = false;
+  bool _isLookingUpAddress = false;
+  bool _showMapPreview = false;
+  String? _error;
+  String? _address;
+  String? _addressError;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadComplaint();
+  }
+
+  @override
+  void dispose() {
+    _feedbackController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadComplaint() async {
+    final token = widget.accessToken;
+    if (token == null || token.isEmpty) {
+      setState(() {
+        _isLoading = false;
+        _error = 'Please sign in again to view this complaint.';
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+    try {
+      final detail = await ApiService.getComplaint(
+        token: token,
+        complaintId: widget.complaintId,
+      );
+      if (!mounted) return;
+      setState(() => _detail = detail);
+      await _lookupAddress(detail);
+    } catch (error) {
+      if (!mounted) return;
+      setState(() => _error = _apiErrorMessage(error));
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _lookupAddress(Map<String, dynamic> detail) async {
+    final latitude = detail['latitude'];
+    final longitude = detail['longitude'];
+    if (latitude is! num || longitude is! num) {
+      setState(() {
+        _address = null;
+        _addressError = 'Coordinates are not available for this complaint.';
+      });
+      return;
+    }
+
+    setState(() {
+      _isLookingUpAddress = true;
+      _addressError = null;
+    });
+    try {
+      final placemarks = await placemarkFromCoordinates(
+        latitude.toDouble(),
+        longitude.toDouble(),
+      );
+      if (!mounted) return;
+      final placemark = placemarks.isEmpty ? null : placemarks.first;
+      final parts = [
+        placemark?.name,
+        placemark?.street,
+        placemark?.subLocality,
+        placemark?.locality,
+        placemark?.administrativeArea,
+        placemark?.postalCode,
+      ]
+          .whereType<String>()
+          .map((part) => part.trim())
+          .where((part) => part.isNotEmpty)
+          .toSet()
+          .toList();
+      setState(() {
+        _address = parts.isEmpty ? null : parts.join(', ');
+        _addressError = parts.isEmpty
+            ? 'No address label was returned; coordinates are shown below.'
+            : null;
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _address = null;
+        _addressError =
+            'Address lookup is unavailable; coordinates are shown below.';
+      });
+    } finally {
+      if (mounted) setState(() => _isLookingUpAddress = false);
+    }
+  }
+
+  Future<void> _pickEvidencePhoto(ImageSource source) async {
+    try {
+      final photo = await _imagePicker.pickImage(
+        source: source,
+        imageQuality: 80,
+      );
+      if (photo != null && mounted) {
+        final bytes = await photo.readAsBytes();
+        if (!mounted) return;
+        if (bytes.length > 5 * 1024 * 1024) {
+          setState(() {
+            _evidencePhoto = null;
+            _evidencePhotoBytes = null;
+          });
+          _showMessage(
+            'Evidence photo must be 5 MB or smaller.',
+            isError: true,
+          );
+          return;
+        }
+        setState(() {
+          _evidencePhoto = photo;
+          _evidencePhotoBytes = bytes;
+        });
+      }
+    } catch (error) {
+      if (mounted) {
+        _showMessage('Unable to select a photo: $error', isError: true);
+      }
+    }
+  }
+
+  String? _photoContentType(XFile photo) {
+    final mimeType = photo.mimeType?.toLowerCase();
+    if (mimeType == 'image/jpeg' ||
+        mimeType == 'image/png' ||
+        mimeType == 'image/webp') {
+      return mimeType;
+    }
+    final extension = photo.path.split('.').last.toLowerCase();
+    return switch (extension) {
+      'jpg' || 'jpeg' => 'image/jpeg',
+      'png' => 'image/png',
+      'webp' => 'image/webp',
+      _ => null,
+    };
+  }
+
+  String _photoFileName(String contentType) {
+    final extension = contentType == 'image/jpeg'
+        ? 'jpg'
+        : contentType.split('/').last;
+    return 'verification-evidence.$extension';
+  }
+
+  Future<void> _submitVerification(String result) async {
+    if (_isSavingVerification || _detail?['verification_eligible'] != true) {
+      return;
+    }
+    final token = widget.accessToken;
+    if (token == null || token.isEmpty) {
+      _showMessage('Please sign in again before responding.', isError: true);
+      return;
+    }
+    final photo = _evidencePhoto;
+    final photoContentType = photo == null ? null : _photoContentType(photo);
+    if (photo != null && photoContentType == null) {
+      _showMessage(
+        'Use a JPEG, PNG, or WebP photo for evidence.',
+        isError: true,
+      );
+      return;
+    }
+
+    setState(() => _isSavingVerification = true);
+    try {
+      await ApiService.submitCitizenVerification(
+        token: token,
+        complaintId: widget.complaintId,
+        result: result,
+        feedback: _feedbackController.text,
+        photoBytes: _evidencePhotoBytes,
+        photoFileName: photo == null || photoContentType == null
+            ? null
+            : _photoFileName(photoContentType),
+        photoContentType: photoContentType,
+      );
+      if (!mounted) return;
+      Navigator.pop(context, true);
+    } catch (error) {
+      if (mounted) {
+        _showMessage(
+          'Unable to save your response: ${_apiErrorMessage(error)}',
+          isError: true,
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isSavingVerification = false);
+    }
+  }
+
+  void _showMessage(String message, {bool isError = false}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: isError ? Colors.redAccent : null,
+      ),
+    );
+  }
+
+  Future<void> _openMap(double latitude, double longitude) async {
+    final mapUri = Uri.https('www.openstreetmap.org', '/', {
+      'mlat': latitude.toString(),
+      'mlon': longitude.toString(),
+      'zoom': '16',
+    });
+    try {
+      if (!await launchUrl(mapUri, mode: LaunchMode.externalApplication) &&
+          mounted) {
+        _showMessage('Unable to open the map link.', isError: true);
+      }
+    } catch (error) {
+      if (mounted) {
+        _showMessage('Unable to open the map link: $error', isError: true);
+      }
+    }
+  }
+
+  Widget _buildMapPreview(double latitude, double longitude) {
+    const zoom = 15;
+    const tileSize = 256.0;
+    const tileCount = 1 << zoom;
+    final safeLatitude = latitude.clamp(-85.05112878, 85.05112878);
+    final latitudeRadians = safeLatitude * math.pi / 180;
+    final scaledX = (longitude + 180) / 360 * tileCount;
+    final scaledY =
+        (1 -
+            math.log(
+                  math.tan(latitudeRadians) + 1 / math.cos(latitudeRadians),
+                ) /
+                math.pi) /
+        2 *
+        tileCount;
+    final tileX = scaledX.floor().clamp(0, tileCount - 1);
+    final tileY = scaledY.floor().clamp(0, tileCount - 1);
+    final markerX = (scaledX - tileX) * tileSize;
+    final markerY = (scaledY - tileY) * tileSize;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: SizedBox(
+            width: tileSize,
+            height: tileSize,
+            child: Stack(
+              children: [
+                Image.network(
+                  'https://tile.openstreetmap.org/$zoom/$tileX/$tileY.png',
+                  width: tileSize,
+                  height: tileSize,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => const Center(
+                    child: Text(
+                      'Map preview unavailable. Check your connection.',
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                );
-              },
+                ),
+                Positioned(
+                  left: (markerX - 16).clamp(0, tileSize - 32).toDouble(),
+                  top: (markerY - 30).clamp(0, tileSize - 32).toDouble(),
+                  child: const Icon(
+                    Icons.location_pin,
+                    size: 32,
+                    color: Colors.red,
+                  ),
+                ),
+              ],
             ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        const Text(
+          'Map tiles © OpenStreetMap contributors',
+          style: TextStyle(fontSize: 11, color: Colors.grey),
+        ),
+      ],
+    );
+  }
+
+  String _eventTitle(String eventType, String status) {
+    return switch (eventType) {
+      'SUBMITTED' => 'Complaint submitted',
+      'ASSIGNED' => 'Worker assignment recorded',
+      'IN_PROGRESS' => 'Worker started work',
+      'COMPLETED' => 'Worker marked work complete',
+      'CITIZEN_VERIFIED' => 'Citizen confirmed resolution',
+      'CITIZEN_DISPUTED' => 'Citizen reported work unresolved',
+      _ => status.replaceAll('_', ' '),
+    };
+  }
+
+  String _statusLabel(String status) {
+    return switch (status) {
+      'CITIZEN_VERIFIED' => 'Citizen confirmed resolution',
+      'CITIZEN_DISPUTED' => 'Citizen reported unresolved work',
+      'COMPLETED' => 'Worker marked work complete — your verification is pending',
+      _ => status.replaceAll('_', ' '),
+    };
+  }
+
+  Widget _buildVerificationEvidenceImage(String token) {
+    return Image.network(
+      ApiService.citizenVerificationEvidenceUri(widget.complaintId).toString(),
+      headers: {'Authorization': 'Bearer $token'},
+      height: 180,
+      width: double.infinity,
+      fit: BoxFit.cover,
+      loadingBuilder: (context, child, progress) => progress == null
+          ? child
+          : const SizedBox(
+              height: 180,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+      errorBuilder: (context, error, stackTrace) => const Text(
+        'Evidence photo is currently unavailable.',
+        style: TextStyle(color: Colors.orange),
+      ),
+    );
+  }
+
+  Widget _buildComplaintDetails(Map<String, dynamic> detail) {
+    final latitude = detail['latitude'];
+    final longitude = detail['longitude'];
+    final createdAt = DateTime.tryParse(
+      detail['created_at']?.toString() ?? '',
+    );
+    final history = detail['status_history'] is List
+        ? (detail['status_history'] as List).whereType<Map<String, dynamic>>()
+        : const <Map<String, dynamic>>[];
+    final verification = detail['verification'] is Map<String, dynamic>
+        ? detail['verification'] as Map<String, dynamic>
+        : null;
+    final token = widget.accessToken;
+
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SelectableText(
+                  'Complaint ${detail['complaint_id'] ?? widget.complaintId}',
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  detail['category']?.toString() ?? 'Category not recorded',
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(height: 8),
+                Chip(label: Text(_statusLabel(detail['status']?.toString() ?? 'Unknown'))),
+                if (createdAt != null)
+                  Text('Reported ${_formatComplaintDate(createdAt)}'),
+                if (detail['assigned_worker_name'] != null)
+                  Text('Assigned worker: ${detail['assigned_worker_name']}'),
+                if (detail['assigned_worker_name'] == null &&
+                    detail['assigned_worker_id'] != null)
+                  Text(
+                    'Worker assignment recorded '
+                    '(ID ${detail['assigned_worker_id']})',
+                  ),
+                const SizedBox(height: 8),
+                Text(detail['description']?.toString() ?? ''),
+                const Divider(height: 24),
+                Text(
+                  _isLookingUpAddress
+                      ? 'Looking up a nearby address…'
+                      : _address ?? _addressError ?? 'Address unavailable.',
+                  style: TextStyle(
+                    color: _address == null ? Colors.grey : null,
+                  ),
+                ),
+                if (latitude is num && longitude is num) ...[
+                  const SizedBox(height: 4),
+                  SelectableText(
+                    'Coordinates: ${latitude.toStringAsFixed(6)}, '
+                    '${longitude.toStringAsFixed(6)}',
+                  ),
+                  TextButton.icon(
+                    onPressed: _isLookingUpAddress
+                        ? null
+                        : () => _lookupAddress(detail),
+                    icon: const Icon(Icons.location_searching, size: 18),
+                    label: const Text('Retry address lookup'),
+                  ),
+                  OutlinedButton.icon(
+                    onPressed: () => setState(
+                      () => _showMapPreview = !_showMapPreview,
+                    ),
+                    icon: const Icon(Icons.map_outlined),
+                    label: Text(
+                      _showMapPreview ? 'Hide map preview' : 'Load map preview',
+                    ),
+                  ),
+                  if (_showMapPreview) ...[
+                    const SizedBox(height: 8),
+                    _buildMapPreview(
+                      latitude.toDouble(),
+                      longitude.toDouble(),
+                    ),
+                    const SizedBox(height: 8),
+                    TextButton.icon(
+                      onPressed: () => _openMap(
+                        latitude.toDouble(),
+                        longitude.toDouble(),
+                      ),
+                      icon: const Icon(Icons.open_in_new, size: 18),
+                      label: const Text('Open exact location in OpenStreetMap'),
+                    ),
+                    const Text(
+                      'Loading the preview sends tile coordinates to '
+                      'OpenStreetMap; opening the full map shares this exact '
+                      'location.',
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                  ],
+                ],
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text('Progress', style: Theme.of(context).textTheme.titleLarge),
+        const SizedBox(height: 4),
+        if (history.isEmpty)
+          const Card(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(
+                'No status-change events are recorded for this complaint yet. '
+                'The current status above comes from the server.',
+              ),
+            ),
+          )
+        else
+          ...history.map((event) {
+            final changedAt = DateTime.tryParse(
+              event['changed_at']?.toString() ?? '',
+            );
+            final eventType = event['event_type']?.toString() ?? '';
+            final status = event['status']?.toString() ?? '';
+            return ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+              leading: const Icon(Icons.check_circle_outline),
+              title: Text(_eventTitle(eventType, status)),
+              subtitle: Text(
+                changedAt == null
+                    ? status.replaceAll('_', ' ')
+                    : '${status.replaceAll('_', ' ')} · '
+                        '${_formatComplaintDate(changedAt)} '
+                        '${changedAt.toLocal().hour.toString().padLeft(2, '0')}:'
+                        '${changedAt.toLocal().minute.toString().padLeft(2, '0')}',
+              ),
+            );
+          }),
+        if (verification != null) ...[
+          const SizedBox(height: 8),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    verification['result'] == 'RESOLVED'
+                        ? 'You confirmed the resolution'
+                        : 'You reported that the work is unresolved',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  if (verification['feedback'] != null) ...[
+                    const SizedBox(height: 8),
+                    Text(verification['feedback'].toString()),
+                  ],
+                  if (verification['evidence_available'] == true &&
+                      token != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: _buildVerificationEvidenceImage(token),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ],
+        if (detail['status'] == 'COMPLETED' &&
+            detail['verification'] == null &&
+            detail['verification_eligible'] != true)
+          const Card(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(
+                'The complaint is marked complete, but the server has no '
+                'recorded Worker completion event to verify. Contact the '
+                'Authority for review.',
+              ),
+            ),
+          ),
+        if (detail['verification_eligible'] == true) ...[
+          const SizedBox(height: 8),
+          Card(
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Has the work resolved the issue?',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 4),
+                  const Text(
+                    'The Worker marked this complaint complete. That is not '
+                    'the same as your verification. Your response will be '
+                    'saved to this complaint and cannot be submitted twice.',
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: _feedbackController,
+                    maxLength: 2000,
+                    maxLines: 3,
+                    decoration: const InputDecoration(
+                      labelText: 'Optional feedback',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  if (_evidencePhoto != null) ...[
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.memory(
+                        _evidencePhotoBytes!,
+                        height: 180,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: _isSavingVerification
+                            ? null
+                              : () => setState(() {
+                                    _evidencePhoto = null;
+                                    _evidencePhotoBytes = null;
+                                  }),
+                        child: const Text('Remove photo'),
+                      ),
+                    ),
+                  ],
+                  OutlinedButton.icon(
+                    onPressed: _isSavingVerification
+                        ? null
+                        : () => showModalBottomSheet<void>(
+                            context: context,
+                            builder: (context) => SafeArea(
+                              child: Wrap(
+                                children: [
+                                  ListTile(
+                                    leading: const Icon(Icons.camera_alt),
+                                    title: const Text('Take a photo'),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      _pickEvidencePhoto(ImageSource.camera);
+                                    },
+                                  ),
+                                  ListTile(
+                                    leading: const Icon(Icons.photo_library),
+                                    title: const Text('Choose from photos'),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      _pickEvidencePhoto(ImageSource.gallery);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                    icon: const Icon(Icons.add_a_photo),
+                    label: Text(
+                      _evidencePhoto == null
+                          ? 'Attach optional photo evidence'
+                          : 'Replace photo evidence',
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  if (_isSavingVerification)
+                    const Center(child: CircularProgressIndicator())
+                  else
+                    Wrap(
+                      spacing: 12,
+                      runSpacing: 8,
+                      children: [
+                        FilledButton.icon(
+                          onPressed: () => _submitVerification('RESOLVED'),
+                          icon: const Icon(Icons.check),
+                          label: const Text('Yes, resolved'),
+                        ),
+                        OutlinedButton.icon(
+                          onPressed: () =>
+                              _submitVerification('NOT_RESOLVED'),
+                          icon: const Icon(Icons.report_outlined),
+                          label: const Text('No, still unresolved'),
+                        ),
+                      ],
+                    ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Photos are uploaded with your response and stored '
+                    'privately by the service.',
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Complaint progress')),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _error != null
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Unable to load complaint details: $_error',
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 12),
+                    ElevatedButton(
+                      onPressed: _loadComplaint,
+                      child: const Text('Try again'),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : _detail == null
+          ? const Center(child: Text('Complaint details are unavailable.'))
+          : _buildComplaintDetails(_detail!),
     );
   }
 }
@@ -1822,6 +2569,7 @@ class CreateComplaintScreen extends StatefulWidget {
 
 class _CreateComplaintScreenState extends State<CreateComplaintScreen> {
   final _formKey = GlobalKey<FormState>();
+  bool _isSubmitting = false;
   String _category = 'Pothole & Road Damage';
   String _severity = 'Medium';
   final TextEditingController _descController = TextEditingController();
@@ -1830,6 +2578,13 @@ class _CreateComplaintScreenState extends State<CreateComplaintScreen> {
   final ImagePicker _picker = ImagePicker();
   double? _latitude;
   double? _longitude;
+
+  @override
+  void dispose() {
+    _descController.dispose();
+    _locationController.dispose();
+    super.dispose();
+  }
 
   Future<void> _getCurrentLocation() async {
     try {
@@ -1878,7 +2633,7 @@ class _CreateComplaintScreenState extends State<CreateComplaintScreen> {
       builder: (context) => AlertDialog(
         title: const Text('Allow Camera Access'),
         content: const Text(
-          'SahaySetu requires access to your camera to capture live photographic evidence of infrastructure issues.',
+          'Take an optional photo for a preview on this device. The prototype does not upload or save captured photos.',
         ),
         actions: [
           TextButton(
@@ -1934,12 +2689,8 @@ class _CreateComplaintScreenState extends State<CreateComplaintScreen> {
   }
 
   Future<void> _submit() async {
+    if (_isSubmitting) return;
     if (!_formKey.currentState!.validate()) return;
-
-    if (_imageFile == null) {
-      _showError('Live photo mandatory!');
-      return;
-    }
 
     if (_latitude == null || _longitude == null) {
       _showError('Please capture your current location first.');
@@ -1954,6 +2705,7 @@ class _CreateComplaintScreenState extends State<CreateComplaintScreen> {
 
     final String description = _descController.text.trim();
 
+    setState(() => _isSubmitting = true);
     try {
       final Map<String, dynamic> result = await ApiService.createComplaint(
         token: token,
@@ -1966,23 +2718,14 @@ class _CreateComplaintScreenState extends State<CreateComplaintScreen> {
 
       if (!mounted) return;
 
-      final Complaint newComplaint = Complaint(
-        id:
-            result['complaint_id']?.toString() ??
-            'SS-${1026 + AppDatabase.complaints.length}',
-        category: _category,
-        description: description,
-        severity: _severity,
-        location: _locationController.text.trim(),
-        status: result['status']?.toString() ?? 'SUBMITTED',
+      final Complaint newComplaint = Complaint.fromApi(
+        result,
         citizenEmail: widget.userEmail,
       );
 
-      AppDatabase.complaints.add(newComplaint);
-
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute<void>(
+        MaterialPageRoute(
           builder: (context) =>
               SubmissionFeedbackScreen(complaint: newComplaint),
         ),
@@ -1990,6 +2733,8 @@ class _CreateComplaintScreenState extends State<CreateComplaintScreen> {
     } catch (e) {
       if (!mounted) return;
       _showError('Complaint submission failed: $e');
+    } finally {
+      if (mounted) setState(() => _isSubmitting = false);
     }
   }
 
@@ -2055,18 +2800,25 @@ class _CreateComplaintScreenState extends State<CreateComplaintScreen> {
               TextFormField(
                 controller: _locationController,
                 decoration: InputDecoration(
-                  labelText: 'Location / Landmark Address *',
+                  labelText: 'Captured GPS coordinates *',
                   border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.my_location, color: Colors.blue),
                     onPressed: _promptGpsPermission,
                   ),
                 ),
-                validator: (val) => val == null || val.trim().isEmpty
-                    ? 'Address mandatory'
-                    : null,
+                readOnly: true,
+                validator: (_) =>
+                    _latitude == null || _longitude == null
+                        ? 'Capture your location'
+                        : null,
               ),
               const SizedBox(height: 20),
+              const Text(
+                'Photo evidence is optional. A selected photo stays on this device; this prototype does not upload or save it.',
+                style: TextStyle(color: Colors.orangeAccent),
+              ),
+              const SizedBox(height: 8),
               OutlinedButton.icon(
                 onPressed: _promptCameraPermissionAndCapture,
                 icon: const Icon(Icons.camera_alt),
@@ -2086,8 +2838,14 @@ class _CreateComplaintScreenState extends State<CreateComplaintScreen> {
               ],
               const SizedBox(height: 24),
               ElevatedButton(
-                onPressed: _submit,
-                child: const Text('Submit Complaint'),
+                onPressed: _isSubmitting ? null : _submit,
+                child: _isSubmitting
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Text('Submit Complaint'),
               ),
             ],
           ),
@@ -2120,8 +2878,21 @@ class SubmissionFeedbackScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             const Text(
-              'Complaint Filed Successfully!',
+              'Complaint submitted successfully',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Complaint ID: ${complaint.id}',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text('Current status: ${complaint.status}'),
+            const SizedBox(height: 8),
+            const Text(
+              'Your complaint has been saved to the server.',
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
             ElevatedButton(
@@ -2147,18 +2918,52 @@ class WorkerLoginScreen extends StatefulWidget {
 
 class _WorkerLoginScreenState extends State<WorkerLoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  bool _obscureWorkerPass = true;
+  final bool _obscureWorkerPass = true;
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _loginWorker() {
-    if (_formKey.currentState!.validate()) {
-      String username = _usernameController.text.trim().toLowerCase();
+  Future<void> _loginWorker() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    try {
+      final data = await ApiService.login(
+        email: _usernameController.text.trim(),
+        password: _passwordController.text,
+      );
+
+      if (data['role'] != 'WORKER') {
+        throw Exception('This account is not a worker account.');
+      }
+
+      final token = data['access_token'] as String;
+      final authenticatedUser = await ApiService.getCurrentUser(
+        token: token,
+      );
+      if (authenticatedUser['role'] != 'WORKER') {
+        throw Exception('This account is not a worker account.');
+      }
+
+      if (!mounted) return;
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => WorkerDashboardScreen(workerId: username),
+          builder: (context) => WorkerDashboardScreen(
+            workerId: authenticatedUser['user_id']?.toString() ?? '',
+            workerName: authenticatedUser['name']?.toString() ?? '',
+            workerEmail: authenticatedUser['email']?.toString() ?? '',
+            workerCategory:
+                authenticatedUser['worker_category']?.toString() ?? '',
+            role: authenticatedUser['role'] as String,
+            accessToken: token,
+          ),
         ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Worker login failed: ${e.toString()}')),
       );
     }
   }
@@ -2185,11 +2990,11 @@ class _WorkerLoginScreenState extends State<WorkerLoginScreen> {
               TextFormField(
                 controller: _usernameController,
                 decoration: const InputDecoration(
-                  labelText: 'Worker Username (e.g. rajesh@sahaysetu)',
+                  labelText: 'Worker email',
                   border: OutlineInputBorder(),
                 ),
-                validator: (val) => val == null || !val.endsWith('@sahaysetu')
-                    ? 'Must end with @sahaysetu'
+                validator: (val) => val == null || !val.contains('@')
+                    ? 'Enter a valid worker email'
                     : null,
               ),
               const SizedBox(height: 16),
@@ -2221,35 +3026,72 @@ class _WorkerLoginScreenState extends State<WorkerLoginScreen> {
 
 class WorkerDashboardScreen extends StatefulWidget {
   final String workerId;
-  const WorkerDashboardScreen({super.key, required this.workerId});
+  final String workerName;
+  final String workerEmail;
+  final String workerCategory;
+  final String role;
+  final String accessToken;
+
+  const WorkerDashboardScreen({
+    super.key,
+    required this.workerId,
+    required this.workerName,
+    required this.workerEmail,
+    required this.workerCategory,
+    required this.role,
+    required this.accessToken,
+  });
 
   @override
   State<WorkerDashboardScreen> createState() => _WorkerDashboardScreenState();
 }
 
 class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
+  List<Complaint> _tasks = [];
+  bool _isLoading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTasks();
+  }
+
+  Future<void> _loadTasks() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+    try {
+      final records = await ApiService.getWorkerComplaints(
+        token: widget.accessToken,
+      );
+      final tasks = records
+          .map((record) => Complaint.fromApi(record, citizenEmail: ''))
+          .toList(growable: false);
+      if (!mounted) return;
+      setState(() => _tasks = tasks);
+    } catch (error) {
+      if (!mounted) return;
+      setState(() => _error = _apiErrorMessage(error));
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final workerInfo = AppDatabase.workerProfiles.firstWhere(
-      (w) => w.workerId.toLowerCase() == widget.workerId.toLowerCase(),
-      orElse: () => WorkerProfile(
-        workerId: widget.workerId,
-        fullName: 'Field Worker',
-        department: 'Pothole & Road Damage',
-        wardZone: 'Municipal Ward',
-        officialEmail: widget.workerId,
-        mobile: '1800-MUN-HELP',
-        designation: 'Municipal Field Staff',
-        bonusPoints: 100,
-      ),
+    final workerInfo = WorkerProfile(
+      workerId: widget.workerId,
+      fullName: widget.workerName,
+      department: widget.workerCategory.isEmpty
+          ? 'Category not assigned'
+          : widget.workerCategory,
+      wardZone: 'Not provided',
+      officialEmail: widget.workerEmail,
+      mobile: 'Not provided',
+      designation: 'Worker account',
     );
-
-    final departmentComplaints = AppDatabase.complaints
-        .where(
-          (c) =>
-              c.category.toLowerCase() == workerInfo.department.toLowerCase(),
-        )
-        .toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -2262,7 +3104,7 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
           children: [
             UserAccountsDrawerHeader(
               accountName: Text(
-                '${workerInfo.fullName} (Bonus: ⭐ ${workerInfo.bonusPoints})',
+                workerInfo.fullName,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               accountEmail: Text(
@@ -2271,7 +3113,7 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
               currentAccountPicture: const CircleAvatar(
                 backgroundColor: Colors.white,
                 child: Icon(
-                  Icons.verified_user,
+                  Icons.engineering,
                   size: 40,
                   color: Color(0xFF0F172A),
                 ),
@@ -2306,7 +3148,9 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        WorkerResolvedHistoryScreen(workerId: widget.workerId),
+                        WorkerResolvedHistoryScreen(
+                          accessToken: widget.accessToken,
+                        ),
                   ),
                 );
               },
@@ -2341,14 +3185,55 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
           ],
         ),
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: departmentComplaints.length,
-        itemBuilder: (context, index) {
-          final complaint = departmentComplaints[index];
-          return Card(
-            margin: const EdgeInsets.only(bottom: 12),
-            child: ListTile(
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _error != null
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      _error!,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.redAccent),
+                    ),
+                    const SizedBox(height: 12),
+                    ElevatedButton(
+                      onPressed: _loadTasks,
+                      child: const Text('Try again'),
+                    ),
+                    if (_error!.contains('sign in again'))
+                      TextButton(
+                        onPressed: _logout,
+                        child: const Text('Return to sign in'),
+                      ),
+                  ],
+                ),
+              ),
+            )
+          : _tasks.isEmpty
+          ? RefreshIndicator(
+              onRefresh: _loadTasks,
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: const [
+                  SizedBox(height: 180),
+                  Center(child: Text('No complaints are assigned to you.')),
+                ],
+              ),
+            )
+          : RefreshIndicator(
+              onRefresh: _loadTasks,
+              child: ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: _tasks.length,
+                itemBuilder: (context, index) {
+                  final complaint = _tasks[index];
+                  return Card(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    child: ListTile(
               title: Text(
                 complaint.id,
                 style: const TextStyle(
@@ -2383,25 +3268,39 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                     builder: (context) => WorkerTaskDetailScreen(
                       complaint: complaint,
                       workerId: widget.workerId,
+                      accessToken: widget.accessToken,
                     ),
                   ),
                 );
-                setState(() {});
+                await _loadTasks();
               },
             ),
-          );
-        },
-      ),
+                  );
+                },
+              ),
+            ),
+    );
+  }
+
+  void _logout() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const RoleSelectionScreen()),
+      (route) => false,
     );
   }
 
   Color _getStatusColor(String status) {
     switch (status) {
       case 'Pending':
+      case 'SUBMITTED':
+      case 'ASSIGNED':
         return Colors.orange;
       case 'In Progress':
+      case 'IN_PROGRESS':
         return Colors.blue;
       case 'Resolved / Awaiting Verification':
+      case 'COMPLETED':
         return Colors.purple;
       case 'Closed':
         return Colors.green;
@@ -2438,21 +3337,12 @@ class WorkerProfileDetailScreen extends StatelessWidget {
                     backgroundColor: Color(0xFF0F172A),
                     child: Icon(Icons.badge, size: 55, color: Colors.white),
                   ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: CircleAvatar(
-                      backgroundColor: Colors.green,
-                      radius: 14,
-                      child: Icon(Icons.check, size: 16, color: Colors.white),
-                    ),
-                  ),
                 ],
               ),
             ),
             const SizedBox(height: 12),
             const Text(
-              'Government Verified Worker Profile',
+              'Worker account profile',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 13,
@@ -2466,16 +3356,11 @@ class WorkerProfileDetailScreen extends StatelessWidget {
             _buildWorkerCard(Icons.category, 'Department', worker.department),
             _buildWorkerCard(Icons.map, 'Assigned Zone', worker.wardZone),
             _buildWorkerCard(
-              Icons.star,
-              'Bonus Points Earned',
-              '${worker.bonusPoints} pts',
-            ),
-            _buildWorkerCard(
               Icons.badge_outlined,
-              'Official ID',
+              'Account ID',
               worker.workerId,
             ),
-            _buildWorkerCard(Icons.email, 'Govt Email', worker.officialEmail),
+            _buildWorkerCard(Icons.email, 'Account Email', worker.officialEmail),
             _buildWorkerCard(Icons.phone, 'Contact Number', worker.mobile),
           ],
         ),
@@ -2516,10 +3401,12 @@ class WorkerProfileDetailScreen extends StatelessWidget {
 class WorkerTaskDetailScreen extends StatefulWidget {
   final Complaint complaint;
   final String workerId;
+  final String accessToken;
   const WorkerTaskDetailScreen({
     super.key,
     required this.complaint,
     required this.workerId,
+    required this.accessToken,
   });
 
   @override
@@ -2529,17 +3416,13 @@ class WorkerTaskDetailScreen extends StatefulWidget {
 class _WorkerTaskDetailScreenState extends State<WorkerTaskDetailScreen> {
   File? _completionPhoto;
   final ImagePicker _picker = ImagePicker();
-  double? _latitude;
-  double? _longitude;
-
+  bool _isUpdating = false;
   final TextEditingController _noteController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-    if (widget.complaint.completionNote != null) {
-      _noteController.text = widget.complaint.completionNote!;
-    }
+  void dispose() {
+    _noteController.dispose();
+    super.dispose();
   }
 
   Future<void> _captureCompletionPhoto() async {
@@ -2560,35 +3443,42 @@ class _WorkerTaskDetailScreenState extends State<WorkerTaskDetailScreen> {
     }
   }
 
-  void _submitWorkCompletion() {
-    if (_completionPhoto == null &&
-        widget.complaint.completionPhotoPath == null) {
+  Future<void> _updateStatus(String status) async {
+    if (_isUpdating) return;
+    setState(() => _isUpdating = true);
+    try {
+      final result = await ApiService.updateWorkerComplaintStatus(
+        token: widget.accessToken,
+        complaintId: widget.complaint.id,
+        status: status,
+      );
+      final savedStatus = result['status']?.toString();
+      if (savedStatus == null || savedStatus.isEmpty) {
+        throw const FormatException(
+          'The server did not return the updated complaint status.',
+        );
+      }
+      if (!mounted) return;
+      setState(() {
+        widget.complaint.status = savedStatus;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Completion photo proof is required!'),
+        SnackBar(
+          content: Text('Task status saved on the server: ${widget.complaint.status}.'),
+        ),
+      );
+      Navigator.pop(context, true);
+    } catch (error) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(_apiErrorMessage(error)),
           backgroundColor: Colors.redAccent,
         ),
       );
-      return;
+    } finally {
+      if (mounted) setState(() => _isUpdating = false);
     }
-
-    setState(() {
-      widget.complaint.status = 'Resolved / Awaiting Verification';
-      widget.complaint.assignedWorker = widget.workerId;
-      widget.complaint.completionNote = _noteController.text.trim();
-      if (_completionPhoto != null) {
-        widget.complaint.completionPhotoPath = _completionPhoto!.path;
-      }
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          'Work submitted! Sent to citizen for review and verification.',
-        ),
-      ),
-    );
-    Navigator.pop(context);
   }
 
   @override
@@ -2622,14 +3512,14 @@ class _WorkerTaskDetailScreenState extends State<WorkerTaskDetailScreen> {
               controller: _noteController,
               maxLines: 3,
               decoration: const InputDecoration(
-                labelText: 'Resolution / Work Note *',
-                hintText: 'Describe work completed...',
+                labelText: 'Work note (demo only; not saved)',
+                hintText: 'Local note for this screen only',
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 20),
             const Text(
-              'Completion Photo Proof *',
+              'Optional photo preview (local only; not uploaded or saved)',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
@@ -2658,16 +3548,37 @@ class _WorkerTaskDetailScreenState extends State<WorkerTaskDetailScreen> {
               ),
             ],
             const SizedBox(height: 28),
-            ElevatedButton(
-              onPressed: _submitWorkCompletion,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF0F172A),
+            if (widget.complaint.status == 'ASSIGNED')
+              ElevatedButton(
+                onPressed:
+                    _isUpdating ? null : () => _updateStatus('IN_PROGRESS'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF0F172A),
+                ),
+                child: const Text('Start Work'),
               ),
-              child: const Text(
-                'Submit for Citizen Verification',
-                style: TextStyle(fontSize: 16),
+            if (widget.complaint.status == 'IN_PROGRESS')
+              ElevatedButton(
+                onPressed:
+                    _isUpdating ? null : () => _updateStatus('COMPLETED'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF0F172A),
+                ),
+                child: _isUpdating
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Text('Mark Work Completed'),
               ),
-            ),
+            if (_isUpdating && widget.complaint.status == 'ASSIGNED')
+              const Center(child: CircularProgressIndicator()),
+            if (widget.complaint.status == 'COMPLETED')
+              const Text(
+                'The backend has recorded this task as completed. Resolution notes, photos and Citizen verification are not persisted by this workflow.',
+                style: TextStyle(color: Colors.orangeAccent),
+              ),
           ],
         ),
       ),
@@ -2678,76 +3589,119 @@ class _WorkerTaskDetailScreenState extends State<WorkerTaskDetailScreen> {
 // ==========================================
 // WORKER RESOLVED HISTORY SCREEN
 // ==========================================
-class WorkerResolvedHistoryScreen extends StatelessWidget {
-  final String workerId;
-  const WorkerResolvedHistoryScreen({super.key, required this.workerId});
+class WorkerResolvedHistoryScreen extends StatefulWidget {
+  final String accessToken;
+  const WorkerResolvedHistoryScreen({super.key, required this.accessToken});
+
+  @override
+  State<WorkerResolvedHistoryScreen> createState() =>
+      _WorkerResolvedHistoryScreenState();
+}
+
+class _WorkerResolvedHistoryScreenState
+    extends State<WorkerResolvedHistoryScreen> {
+  List<Complaint> _completedTasks = [];
+  bool _isLoading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadHistory();
+  }
+
+  Future<void> _loadHistory() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+    try {
+      final records = await ApiService.getWorkerComplaints(
+        token: widget.accessToken,
+      );
+      final tasks = records
+          .where((record) => record['status'] == 'COMPLETED')
+          .map((record) => Complaint.fromApi(record, citizenEmail: ''))
+          .toList(growable: false);
+      if (!mounted) return;
+      setState(() => _completedTasks = tasks);
+    } catch (error) {
+      if (!mounted) return;
+      setState(() => _error = _apiErrorMessage(error));
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final resolvedTasks = AppDatabase.complaints
-        .where(
-          (c) =>
-              c.assignedWorker == workerId &&
-              (c.status.contains('Awaiting') || c.status == 'Closed'),
-        )
-        .toList();
+    Widget body;
+    if (_isLoading) {
+      body = const Center(child: CircularProgressIndicator());
+    } else if (_error != null) {
+      body = Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(_error!, textAlign: TextAlign.center),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: _loadHistory,
+                child: const Text('Try again'),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else if (_completedTasks.isEmpty) {
+      body = RefreshIndicator(
+        onRefresh: _loadHistory,
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: const [
+            SizedBox(height: 180),
+            Center(child: Text('No completed assigned tasks yet.')),
+          ],
+        ),
+      );
+    } else {
+      body = RefreshIndicator(
+        onRefresh: _loadHistory,
+        child: ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: _completedTasks.length,
+          itemBuilder: (context, index) {
+            final task = _completedTasks[index];
+            return Card(
+              margin: const EdgeInsets.only(bottom: 12),
+              child: ListTile(
+                title: Text(
+                  task.id,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text('${task.category}\n${task.location}'),
+                trailing: const Text(
+                  'COMPLETED',
+                  style: TextStyle(
+                    color: Colors.green,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF0F172A),
         title: const Text('Resolved Complaints History'),
       ),
-      body: resolvedTasks.isEmpty
-          ? const Center(child: Text('No resolved tasks in your history yet.'))
-          : ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: resolvedTasks.length,
-              itemBuilder: (context, index) {
-                final task = resolvedTasks[index];
-                return Card(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          task.id,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF0F172A),
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Category: ${task.category}',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text('Location: ${task.location}'),
-                        Text('Note: ${task.completionNote ?? "N/A"}'),
-                        Text(
-                          'Status: ${task.status}',
-                          style: const TextStyle(
-                            color: Colors.green,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        if (task.citizenRating != null) ...[
-                          const SizedBox(height: 6),
-                          Text(
-                            'Citizen Rating: ${task.citizenRating} / 5 ⭐',
-                            style: const TextStyle(
-                              color: Colors.amber,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
+      body: body,
     );
   }
 }

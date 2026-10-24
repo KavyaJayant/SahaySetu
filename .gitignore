@@ -1,5 +1,7 @@
 backend/.venv/
 backend/**pycache**/
+backend/evidence_storage/
+mobile/android/.kotlin/
 *.pyc
 .env
 **/**pycache**/

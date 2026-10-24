@@ -1,5 +1,7 @@
 # Rule-based civic relationship model
 
+from category_mapping import category_analysis_key
+
 
 RELATIONSHIP_RULES = {
     ("BLOCKED_DRAIN", "WATERLOGGING"): {
@@ -43,6 +45,17 @@ def get_relationship(category1, category2):
     The result represents a rule-based hypothesis,
     not confirmed causation.
     """
+
+    category1 = category_analysis_key(category1)
+    category2 = category_analysis_key(category2)
+    if category1 is None or category2 is None:
+        return {
+            "relationship": "NO_DEFINED_RELATIONSHIP",
+            "explanation": (
+                "A category is missing or unsupported, so no relationship "
+                "was inferred."
+            )
+        }
 
     rule = RELATIONSHIP_RULES.get(
         (category1, category2)

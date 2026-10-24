@@ -3,7 +3,7 @@
 // ==========================================
 
 // FASTAPI BACKEND
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "http://127.0.0.1:8001";
 
 
 // Get login form
@@ -54,10 +54,7 @@ loginForm.addEventListener("submit", async function (event) {
         // SEND LOGIN REQUEST TO FASTAPI
         // ==========================================
 
-        const formData = new URLSearchParams();
-
-        formData.append("username", login);
-        formData.append("password", password);
+        
 
 
         const response = await fetch(
@@ -129,7 +126,15 @@ loginForm.addEventListener("submit", async function (event) {
 
 
             // Go to Authority Dashboard
-            window.location.href = "../AUTHO-DASHBOARD/authority.html";
+            if (data.role !== "AUTHORITY") {
+              localStorage.removeItem("access_token");
+              alert("This account is not an authority account.");
+              loginButton.disabled = false;
+              loginButton.textContent = "Login";
+              return;
+          }
+
+         window.location.href = "../authority-dashboard/authority.html";
 
         } else {
 

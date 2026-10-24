@@ -1,5 +1,7 @@
 from datetime import timedelta
 
+from category_mapping import category_analysis_key
+
 
 RECURRENCE_DISTANCE_METERS = 300
 RECURRENCE_TIME_DAYS = 30
@@ -24,6 +26,9 @@ def is_recurrence_candidate(
     distance_meters,
     recovery_status
 ):
+    if recovery_status is None:
+        return False
+
     if recovery_status not in [
         "RECOVERED",
         "RECOVERING"
@@ -46,7 +51,9 @@ def is_recurrence_candidate(
     ):
         return False
 
-    if original_complaint.category != new_complaint.category:
+    if category_analysis_key(original_complaint.category) != (
+        category_analysis_key(new_complaint.category)
+    ):
         return False
 
     return True
@@ -55,7 +62,8 @@ def is_recurrence_candidate(
 def detect_recurrence(
     original_complaint,
     complaints,
-    calculate_distance_function
+    calculate_distance_function,
+    recovery_status=None
 ):
     recurrence_candidates = []
 
@@ -72,7 +80,8 @@ def detect_recurrence(
         if is_recurrence_candidate(
             original_complaint,
             complaint,
-            distance
+            distance,
+            recovery_status
         ):
             recurrence_candidates.append({
                 "complaint": complaint,

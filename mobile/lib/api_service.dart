@@ -1,14 +1,28 @@
 import 'dart:convert';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show defaultTargetPlatform, TargetPlatform;
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
-import 'dart:convert';
+class ApiException implements Exception {
+  final int statusCode;
+  final String message;
 
-import 'package:http/http.dart' as http;
+  const ApiException(this.statusCode, this.message);
+
+  @override
+  String toString() => message;
+}
 
 class ApiService {
-  // For Android phone testing, replace this with your laptop's
-  // IPv4 address, e.g. http://192.168.1.5:8000
-  static const String baseUrl = 'http://192.168.1.35:8000';
+  static const String _configuredBaseUrl = String.fromEnvironment(
+    'SAHAYSETU_API_BASE_URL',
+  );
+  static final String baseUrl = _configuredBaseUrl.isNotEmpty
+      ? _configuredBaseUrl
+      : defaultTargetPlatform == TargetPlatform.android
+      ? 'http://10.0.2.2:8000'
+      : 'http://127.0.0.1:8000';
 
   // ---------------------------------------------------------------------------
   // Auth
@@ -35,6 +49,28 @@ class ApiService {
       body: {'email': email, 'password': password},
       fallbackError: 'Login failed',
     );
+  }
+
+  static Future<Map<String, dynamic>> getCurrentUser({
+    required String token,
+  }) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/auth/me'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    final decoded = jsonDecode(response.body);
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      final detail = decoded is Map<String, dynamic> ? decoded['detail'] : null;
+      throw ApiException(
+        response.statusCode,
+        detail?.toString() ?? 'Unable to validate login',
+      );
+    }
+    if (decoded is! Map<String, dynamic>) {
+      throw const FormatException('User response is invalid');
+    }
+    return decoded;
   }
 
   // ---------------------------------------------------------------------------
@@ -67,6 +103,194 @@ class ApiService {
     );
   }
 
+  static Future<List<Map<String, dynamic>>> getMyComplaints({
+    required String token,
+  }) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/complaints/my'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    final decoded = jsonDecode(response.body);
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      final detail = decoded is Map<String, dynamic> ? decoded['detail'] : null;
+      throw ApiException(
+        response.statusCode,
+        detail?.toString() ?? 'Unable to load complaints',
+      );
+    }
+    if (decoded is! List) {
+      throw const FormatException('Complaint history response is not a list');
+    }
+
+    return decoded
+        .map((record) {
+          if (record is! Map<String, dynamic>) {
+            throw const FormatException(
+              'Complaint history contains an invalid record',
+            );
+          }
+          return record;
+        })
+        .toList(growable: false);
+  }
+
+  static Future<Map<String, dynamic>> getComplaint({
+    required String token,
+    required String complaintId,
+  }) async {
+    final response = await http.get(
+      Uri.parse(
+        '$baseUrl/complaints/${Uri.encodeComponent(complaintId)}',
+      ),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+    final decoded = jsonDecode(response.body);
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      final detail = decoded is Map<String, dynamic>
+          ? decoded['detail']?.toString()
+          : null;
+      throw ApiException(response.statusCode, detail ?? 'Unable to load complaint details');
+    }
+    if (decoded is! Map<String, dynamic>) {
+      throw const FormatException('Complaint detail response is invalid');
+    }
+    return decoded;
+  }
+
+  static Future<Map<String, dynamic>> submitCitizenVerification({
+    required String token,
+    required String complaintId,
+    required String result,
+    String? feedback,
+    Uint8List? photoBytes,
+    String? photoFileName,
+    String? photoContentType,
+  }) async {
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse(
+        '$baseUrl/complaints/${Uri.encodeComponent(complaintId)}/verification',
+      ),
+    );
+    request.headers['Authorization'] = 'Bearer $token';
+    request.fields['result'] = result;
+    if (feedback != null && feedback.trim().isNotEmpty) {
+      request.fields['feedback'] = feedback.trim();
+    }
+    if (photoBytes != null) {
+      if (photoContentType == null || photoFileName == null) {
+        throw const FormatException('Selected photo type is not supported');
+      }
+      request.files.add(
+        http.MultipartFile.fromBytes(
+          'evidence',
+          photoBytes,
+          filename: photoFileName,
+          contentType: MediaType.parse(photoContentType),
+        ),
+      );
+    }
+
+    final streamed = await request.send();
+    final response = await http.Response.fromStream(streamed);
+    final decoded = jsonDecode(response.body);
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      final detail = decoded is Map<String, dynamic>
+          ? decoded['detail']?.toString()
+          : null;
+      throw ApiException(
+        response.statusCode,
+        detail ?? 'Unable to save your verification response',
+      );
+    }
+    if (decoded is! Map<String, dynamic>) {
+      throw const FormatException('Verification response is invalid');
+    }
+    return decoded;
+  }
+
+  static Uri citizenVerificationEvidenceUri(String complaintId) => Uri.parse(
+    '$baseUrl/complaints/${Uri.encodeComponent(complaintId)}/verification/evidence',
+  );
+
+  static Future<List<Map<String, dynamic>>> getWorkerComplaints({
+    required String token,
+  }) => _getList(
+    '/worker/complaints',
+    token: token,
+    fallbackError: 'Unable to load assigned tasks',
+  );
+
+  static Future<Map<String, dynamic>> updateWorkerComplaintStatus({
+    required String token,
+    required String complaintId,
+    required String status,
+  }) => _put(
+    '/worker/complaints/${Uri.encodeComponent(complaintId)}/status',
+    token: token,
+    body: {'status': status},
+    fallbackError: 'Unable to update task status',
+  );
+
+  static Future<List<Map<String, dynamic>>> _getList(
+    String path, {
+    required String token,
+    required String fallbackError,
+  }) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl$path'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+    final decoded = jsonDecode(response.body);
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      final detail = decoded is Map<String, dynamic>
+          ? decoded['detail']?.toString()
+          : null;
+      throw ApiException(response.statusCode, detail ?? fallbackError);
+    }
+    if (decoded is! List) {
+      throw const FormatException('Server response is not a list');
+    }
+    return decoded
+        .map((record) {
+          if (record is! Map<String, dynamic>) {
+            throw const FormatException(
+              'Server response contains an invalid record',
+            );
+          }
+          return record;
+        })
+        .toList(growable: false);
+  }
+
+  static Future<Map<String, dynamic>> _put(
+    String path, {
+    required String token,
+    required Map<String, dynamic> body,
+    required String fallbackError,
+  }) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl$path'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(body),
+    );
+    final decoded = jsonDecode(response.body);
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      final detail = decoded is Map<String, dynamic>
+          ? decoded['detail']?.toString()
+          : null;
+      throw ApiException(response.statusCode, detail ?? fallbackError);
+    }
+    if (decoded is! Map<String, dynamic>) {
+      throw const FormatException('Server response is invalid');
+    }
+    return decoded;
+  }
+
   // ---------------------------------------------------------------------------
   // Shared helper
   // ---------------------------------------------------------------------------
@@ -86,12 +310,17 @@ class ApiService {
       body: jsonEncode(body),
     );
 
-    final data = jsonDecode(response.body) as Map<String, dynamic>;
-
+    final decoded = jsonDecode(response.body);
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw Exception(data['detail'] ?? fallbackError);
+      final detail = decoded is Map<String, dynamic> ? decoded['detail'] : null;
+      throw ApiException(
+        response.statusCode,
+        detail?.toString() ?? fallbackError,
+      );
     }
-
-    return data;
+    if (decoded is! Map<String, dynamic>) {
+      throw const FormatException('Server response is invalid');
+    }
+    return decoded;
   }
 }

@@ -685,24 +685,76 @@
 
                 </div>
 
-
-                <div class="empty-feature">
-
-                    <div class="feature-icon">
-                        ♙
+                <div class="stats-grid worker-stats">
+                    <div class="stat-card">
+                        <div class="stat-top"><span class="stat-label">WORKERS</span></div>
+                        <h2 id="workerTotal">0</h2>
+                        <p>All registered workers</p>
                     </div>
+                    <div class="stat-card">
+                        <div class="stat-top"><span class="stat-label">ASSIGNED</span></div>
+                        <h2 id="workerAssignedTotal">0</h2>
+                        <p>Complaints with a worker</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-top"><span class="stat-label">UNASSIGNED</span></div>
+                        <h2 id="workerUnassignedTotal">0</h2>
+                        <p>Complaints awaiting assignment</p>
+                    </div>
+                </div>
 
-                    <h2>Worker Management</h2>
-
-                    <p>
-                        Worker assignment will be connected to the
-                        Authority API here.
+                <div class="panel assignment-panel">
+                    <div class="panel-header">
+                        <div>
+                            <h2>Assign a complaint</h2>
+                            <p>Eligible workers are limited to the complaint’s matching category.</p>
+                        </div>
+                    </div>
+                    <div class="assignment-controls">
+                        <label>
+                            Complaint
+                            <select id="complaintSelect" aria-label="Complaint selection" onchange="loadEligibleWorkers()">
+                                <option value="">Select a complaint</option>
+                            </select>
+                        </label>
+                        <label>
+                            Category-matched worker
+                            <select id="workerSelect" aria-label="Worker selection" onchange="updateAssignmentButton(); showSelectedWorkerAssignments()" disabled>
+                                <option value="">Select a complaint first</option>
+                            </select>
+                        </label>
+                        <button id="assignButton" class="primary-button" onclick="assignWorkerToComplaint()" disabled>
+                            Assign Worker
+                        </button>
+                    </div>
+                    <p id="selectedComplaintInfo" class="assignment-info" aria-live="polite">
+                        Select a complaint to view its current assignment and eligible workers.
                     </p>
+                    <p id="assignmentStatus" class="assignment-message" role="status" aria-live="polite"></p>
+                </div>
 
-                    <span>
-                        API: PUT /authority/complaints/{complaint_id}/assign
-                    </span>
-
+                <div class="panel">
+                    <div class="panel-header worker-table-header">
+                        <div>
+                            <h2>Worker assignments</h2>
+                            <p>Expand a worker to inspect assigned complaints and their current status.</p>
+                        </div>
+                        <label class="category-filter-label">
+                            Filter category
+                            <select id="workerCategoryFilter" onchange="filterWorkers()">
+                                <option value="all">All categories</option>
+                                <option>Pothole &amp; Road Damage</option>
+                                <option>Broken Streetlight</option>
+                                <option>Garbage Accumulation</option>
+                                <option>Water Leakage</option>
+                                <option>Blocked Drainage</option>
+                                <option value="unclassified">No category</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div id="workerTable" class="table-wrapper">
+                        <div class="loading">Loading workers...</div>
+                    </div>
                 </div>
 
             </section>
@@ -737,68 +789,30 @@
 
                 </div>
 
-
-                <div class="feature-grid">
-
-                    <div class="feature-card">
-
-                        <div class="feature-icon orange-icon">
-                            ⚡
+                <div class="panel">
+                    <div class="incident-fusion-tool">
+                        <label for="fusionComplaintSelect">Review an unlinked complaint for possible incident grouping</label>
+                        <div class="incident-fusion-controls">
+                            <select id="fusionComplaintSelect">
+                                <option value="">Loading complaints...</option>
+                            </select>
+                            <button id="fuseComplaintButton" type="button" class="btn-primary">Find related reports</button>
                         </div>
-
-                        <h2>Complaint Fusion</h2>
-
-                        <p>
-                            Combine related complaints into a
-                            single incident for better coordination.
+                        <p class="analysis-disclaimer">
+                            Grouping is a rule-based proximity/category hypothesis, not proof that reports describe the same physical incident.
                         </p>
-
-                        <span>
-                            POST /authority/incidents/fuse/{complaint_id}
-                        </span>
-
+                        <div id="fusionStatus" class="form-status" role="status" aria-live="polite"></div>
                     </div>
-
-
-                    <div class="feature-card">
-
-                        <div class="feature-icon blue-icon">
-                            ◉
+                    <div class="panel-header">
+                        <div>
+                            <h2>Known Incidents</h2>
+                            <p>Inspect linked complaints, relationship hypotheses, work records and recovery observations.</p>
                         </div>
-
-                        <h2>Relationships</h2>
-
-                        <p>
-                            View complaints and issues related to
-                            an existing incident.
-                        </p>
-
-                        <span>
-                            GET /authority/incidents/{incident_id}/relationships
-                        </span>
-
                     </div>
-
-
-                    <div class="feature-card">
-
-                        <div class="feature-icon green-icon">
-                            ✓
-                        </div>
-
-                        <h2>Interventions</h2>
-
-                        <p>
-                            Monitor actions taken to resolve
-                            identified incidents.
-                        </p>
-
-                        <span>
-                            GET /authority/incidents/{incident_id}/interventions
-                        </span>
-
+                    <div id="incidentList" class="table-wrapper">
+                        <div class="loading">Loading incidents...</div>
                     </div>
-
+                    <div id="incidentAnalysisPanel" class="incident-analysis-panel" hidden aria-live="polite"></div>
                 </div>
 
             </section>

@@ -1,5 +1,7 @@
 # Rule-based Intervention Impact Assessment
 
+from category_mapping import category_analysis_key
+
 
 INTERVENTION_RULES = {
     "BLOCKED_DRAIN": [
@@ -121,10 +123,8 @@ def assess_interventions(complaints, relationships):
     # relevant candidate interventions.
     for complaint in complaints:
 
-        rules = INTERVENTION_RULES.get(
-            complaint.category,
-            []
-        )
+        category = category_analysis_key(complaint.category)
+        rules = INTERVENTION_RULES.get(category, [])
 
         for rule in rules:
 

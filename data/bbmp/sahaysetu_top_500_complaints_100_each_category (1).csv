@@ -1,0 +1,501 @@
+complaint_id,sahaysetu_category,original_department_category,original_subcategory,grievance_date,ward_name,grievance_status
+20771015,Road Damage,Road Infrastructure,Road Infrastructure,2025-06-19 12:49:00.000000000,Shanthala Nagar,Registered
+20771012,Road Damage,Road Infrastructure,Road Infrastructure,2025-06-19 12:47:00.000000000,Shakambari Nagar,Registered
+20770910,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 11:58:00.000000000,Hebbal,Registered
+20770739,Road Damage,Road Infrastructure,Road Infrastructure,2025-06-19 10:29:00.000000000,Kengeri,Registered
+20770730,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 10:24:00.000000000,Pattabhiram Nagar,Registered
+20770721,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 10:21:00.000000000,Shiva Nagar,Registered
+20771662,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 10:05:00.000000000,Bilekahalli,Registered
+20770634,Road Damage,Road Infrastructure,Road Infrastructure,2025-06-19 09:20:00.000000000,Bellandur,Registered
+20770627,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 09:12:00.000000000,Rajarajeshwari Nagar,Registered
+20770585,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 08:45:00.000000000,Vignana Nagar,Registered
+20770580,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 08:41:00.000000000,Begur,Registered
+20770569,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 08:32:00.000000000,Horamavu,Registered
+20770523,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 07:41:00.000000000,Ramamurthy Nagar,Registered
+20770521,Road Damage,Road Infrastructure,Road Infrastructure,2025-06-19 07:39:00.000000000,Byrasandra,Registered
+20771514,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 07:27:00.000000000,C.V.Raman Nagar,Registered
+20771481,Road Damage,Road Infrastructure,Road Infrastructure,2025-06-19 07:09:00.000000000,Vignana Nagar,Registered
+20770485,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 06:53:00.000000000,Kengeri,Registered
+20771466,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 06:50:00.000000000,Shettyhalli,Registered
+20771374,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 05:44:00.000000000,Attiguppe,Registered
+20771328,Road Damage,Road Infrastructure,Road Infrastructure,2025-06-19 04:51:00.000000000,Hagadooru,Registered
+20771315,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 04:33:00.000000000,Jnanabharathi Ward,Registered
+20771285,Road Damage,Road Infrastructure,Road Infrastructure,2025-06-19 04:01:00.000000000,Hemmigepura,Registered
+20771219,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 03:23:00.000000000,Bommanahalli,Registered
+20771216,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 03:20:00.000000000,Sampangiram Nagar,Registered
+20771184,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 02:56:00.000000000,Attiguppe,Registered
+20771181,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 02:52:00.000000000,Shanthala Nagar,Registered
+20771111,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 01:49:00.000000000,Konanakunte,Registered
+20771108,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 01:48:00.000000000,Sudam Nagar,Registered
+20770467,Road Damage,Road Infrastructure,Road Infrastructure,2025-06-19 01:20:00.000000000,Begur,Registered
+20771061,Road Damage,Road Maintenance(Engg),Potholes,2025-06-19 01:16:00.000000000,Jeevanbhima Nagar,Registered
+20769798,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 12:57:00.000000000,Jnanabharathi Ward,Registered
+20769743,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 12:17:00.000000000,Chikpete,Registered
+20769732,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 12:11:00.000000000,Benniganahalli,Registered
+20770457,Road Damage,Road Infrastructure,Road Infrastructure,2025-06-18 12:05:00.000000000,Bellandur,Registered
+20770453,Road Damage,Road Infrastructure,Road Infrastructure,2025-06-18 11:55:00.000000000,Sampangiram Nagar,Registered
+20770452,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 11:52:00.000000000,Gottigere,Registered
+20769666,Road Damage,Road Infrastructure,Road Infrastructure,2025-06-18 11:38:00.000000000,Uttarahalli,Registered
+20769634,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 11:22:00.000000000,Rajarajeshwari Nagar,Registered
+20769607,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 11:11:00.000000000,Lingarajapuram,Registered
+20769547,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 10:50:00.000000000,Shakambari Nagar,Registered
+20769538,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 10:47:00.000000000,Shakambari Nagar,Registered
+20769523,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 10:40:00.000000000,Begur,Registered
+20769487,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 10:20:00.000000000,Visvesvarapuram,Registered
+20769480,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 10:15:00.000000000,Garudacharpalya,Registered
+20769477,Road Damage,Road Infrastructure,Road Infrastructure,2025-06-18 10:13:00.000000000,Maruthi Seva Nagar,Registered
+20769475,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 10:11:00.000000000,Jakkur,Registered
+20769457,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 10:00:00.000000000,Ejipura,Registered
+20770379,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 09:55:00.000000000,Herohalli,Registered
+20769450,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 09:54:00.000000000,Jnanabharathi Ward,Registered
+20769371,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 09:10:00.000000000,Jakkur,Registered
+20769343,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 08:49:00.000000000,Horamavu,Registered
+20770306,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 08:43:00.000000000,Laggere,Registered
+20769325,Road Damage,Road Infrastructure,Road Infrastructure,2025-06-18 08:36:00.000000000,Basaveshwara Nagar,Registered
+20769313,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 08:25:00.000000000,Begur,Registered
+20770257,Road Damage,Road Infrastructure,Road Infrastructure,2025-06-18 07:55:00.000000000,Hemmigepura,Registered
+20770151,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 06:34:00.000000000,Hosahalli,Registered
+20769245,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 06:28:00.000000000,Mangammanapalya,Registered
+20769244,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 06:25:00.000000000,Mangammanapalya,Registered
+20770074,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 05:07:00.000000000,HBR Layout,Registered
+20770031,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 04:40:00.000000000,Hemmigepura,Registered
+20769899,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 02:17:00.000000000,Sudam Nagar,Registered
+20769848,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 01:33:00.000000000,Shanthala Nagar,Registered
+20769843,Road Damage,Road Maintenance(Engg),Potholes,2025-06-18 01:31:00.000000000,Uttarahalli,Registered
+20768535,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 12:46:00.000000000,HSR Layout,Registered
+20768457,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 11:54:00.000000000,Maruthi Seva Nagar,Non Relevant
+20769226,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 11:47:00.000000000,Basavanapura,Registered
+20768334,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 10:55:00.000000000,Nayandanahalli,Registered
+20768309,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 10:45:00.000000000,Bommanahalli,Non Relevant
+20768301,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 10:41:00.000000000,Bilekahalli,Non Relevant
+20768295,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 10:36:00.000000000,Horamavu,Registered
+20768289,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 10:34:00.000000000,Horamavu,Registered
+20768248,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 10:14:00.000000000,Shankaramata,Registered
+20768197,Road Damage,Road Infrastructure,Road Infrastructure,2025-06-17 09:54:00.000000000,Kadugodi,Registered
+20769155,Road Damage,Road Infrastructure,Road Infrastructure,2025-06-17 09:45:00.000000000,Hagadooru,Registered
+20769147,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 09:37:00.000000000,Vasanthapura,Closed
+20769146,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 09:36:00.000000000,Uttarahalli,Closed
+20768124,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 09:18:00.000000000,Kottigepalya,Registered
+20768087,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 08:48:00.000000000,Radhakrishna Temple,Registered
+20768057,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 08:21:00.000000000,Bilekahalli,Non Relevant
+20769063,Road Damage,Road Infrastructure,Road Infrastructure,2025-06-17 08:13:00.000000000,Shakthiganapathi Nagar,Registered
+20769045,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 08:04:00.000000000,Bellandur,Registered
+20768027,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 07:49:00.000000000,Hagadooru,Registered
+20768022,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 07:45:00.000000000,Puttenahalli,Registered
+20769026,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 07:42:00.000000000,Arakere,Registered
+20769011,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 07:37:00.000000000,Hoodi,Registered
+20768999,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 07:30:00.000000000,Yelachenahalli,Closed
+20768958,Road Damage,Road Infrastructure,Road Infrastructure,2025-06-17 07:08:00.000000000,Doddabommasandra,Registered
+20768000,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 06:50:00.000000000,Kottigepalya,Registered
+20768942,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 06:50:00.000000000,Jnanabharathi Ward,Registered
+20767997,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 06:48:00.000000000,Radhakrishna Temple,Registered
+20768928,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 06:34:00.000000000,Marathalli,Registered
+20768890,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 06:04:00.000000000,Horamavu,Registered
+20768876,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 05:55:00.000000000,Hoodi,Registered
+20768810,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 04:59:00.000000000,Sunkenahalli,Registered
+20768751,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 04:01:00.000000000,Basavanapura,Registered
+20768724,Road Damage,Road Infrastructure,Road Infrastructure,2025-06-17 03:32:00.000000000,Kadugodi,Registered
+20768688,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 02:59:00.000000000,Mangammanapalya,Registered
+20768614,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 01:45:00.000000000,Basavanagudi,Registered
+20768611,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 01:43:00.000000000,Someshwara,Non Relevant
+20768601,Road Damage,Road Maintenance(Engg),Potholes,2025-06-17 01:28:00.000000000,Jakkur,Registered
+20771024,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 12:56:00.000000000,Vignana Nagar,Registered
+20770459,Drainage,Road Maintenance(Engg),water stagnation,2025-06-19 12:11:00.000000000,Bellandur,Registered
+20770899,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 11:52:00.000000000,Jnanabharathi Ward,Registered
+20770759,Drainage,Storm  Water Drain(SWD),Maintenance of SWD,2025-06-19 10:36:00.000000000,Sanjay Nagar,Registered
+20770727,Drainage,Storm  Water Drain(SWD),Maintenance of SWD,2025-06-19 10:23:00.000000000,Doddanekkundi,Registered
+20770710,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 10:17:00.000000000,Thanisandra,Registered
+20771656,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 09:55:00.000000000,Varthur,Registered
+20771649,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 09:37:00.000000000,Radhakrishna Temple,Registered
+20770648,Drainage,Storm  Water Drain(SWD),Maintenance of SWD,2025-06-19 09:34:00.000000000,Banaswadi,Registered
+20770637,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 09:22:00.000000000,HSR Layout,Registered
+20770633,Drainage,Storm  Water Drain(SWD),Sewerage water left in SWD,2025-06-19 09:19:00.000000000,Arakere,Registered
+20771634,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 09:18:00.000000000,Neelasandra,Registered
+20771632,Drainage,Storm  Water Drain(SWD),Sewerage water left in SWD,2025-06-19 09:17:00.000000000,Vidyaranyapura,Registered
+20771621,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 09:14:00.000000000,Bommanahalli,Registered
+20771593,Drainage,Road Maintenance(Engg),water stagnation,2025-06-19 08:50:00.000000000,Lakkasandra,Registered
+20771588,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 08:47:00.000000000,Sarvagna Nagar,Registered
+20770584,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 08:44:00.000000000,Hegganahalli,Registered
+20771571,Drainage,Storm  Water Drain(SWD),Maintenance of SWD,2025-06-19 08:27:00.000000000,Uttarahalli,Registered
+20770562,Drainage,Road Maintenance(Engg),water stagnation,2025-06-19 08:20:00.000000000,C.V.Raman Nagar,Registered
+20770536,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 07:52:00.000000000,Doddanekkundi,Registered
+20771526,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 07:39:00.000000000,Kadugodi,Registered
+20771524,Drainage,Storm  Water Drain(SWD),Sewerage water left in SWD,2025-06-19 07:36:00.000000000,Ramamurthy Nagar,Registered
+20770515,Drainage,Storm  Water Drain(SWD),Garbage thrown in storm water drain,2025-06-19 07:33:00.000000000,Hagadooru,Registered
+20771476,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 07:04:00.000000000,Radhakrishna Temple,Registered
+20771467,Drainage,Storm  Water Drain(SWD),Sewerage water left in SWD,2025-06-19 06:51:00.000000000,Kodigehalli,Registered
+20771433,Drainage,Road Maintenance(Engg),water stagnation,2025-06-19 06:24:00.000000000,Chikpete,Registered
+20771426,Drainage,Road Maintenance(Engg),water stagnation,2025-06-19 06:16:00.000000000,Byrasandra,Registered
+20771420,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 06:11:00.000000000,Arakere,Registered
+20771414,Drainage,Storm  Water Drain(SWD),Sewerage water left in SWD,2025-06-19 06:07:00.000000000,Kuvempu Nagar,Registered
+20771371,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 05:43:00.000000000,Kengeri,Registered
+20771318,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 04:38:00.000000000,Hagadooru,Registered
+20771314,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 04:32:00.000000000,Jnanabharathi Ward,Registered
+20771310,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 04:27:00.000000000,Kadugodi,Registered
+20771297,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 04:09:00.000000000,Begur,Registered
+20771139,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 02:16:00.000000000,Dodda Bidarkallu,Registered
+20771140,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 02:16:00.000000000,Bellandur,Registered
+20771137,Drainage,Storm  Water Drain(SWD),Maintenance of SWD,2025-06-19 02:14:00.000000000,Arakere,Registered
+20771118,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 01:51:00.000000000,Shettyhalli,Registered
+20771114,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 01:50:00.000000000,Bellandur,Registered
+20770465,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 01:03:00.000000000,Varthur,Registered
+20771035,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 01:02:00.000000000,Kadugodi,Registered
+20771036,Drainage,Road Maintenance(Engg),Road side drains,2025-06-19 01:02:00.000000000,Kadugodi,Registered
+20769797,Drainage,Storm  Water Drain(SWD),Maintenance of SWD,2025-06-18 12:57:00.000000000,Hagadooru,Registered
+20769790,Drainage,Storm  Water Drain(SWD),Maintenance of SWD,2025-06-18 12:50:00.000000000,Bagalagunte,Registered
+20769785,Drainage,Storm  Water Drain(SWD),Maintenance of SWD,2025-06-18 12:46:00.000000000,Varthur,Registered
+20769235,Drainage,Storm  Water Drain(SWD),Sewerage water left in SWD,2025-06-18 12:44:00.000000000,Someshwara,Registered
+20769781,Drainage,Storm  Water Drain(SWD),Maintenance of SWD,2025-06-18 12:42:00.000000000,Kadugodi,Registered
+20769744,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 12:18:00.000000000,Hemmigepura,Registered
+20770455,Drainage,Road Maintenance(Engg),water stagnation,2025-06-18 11:59:00.000000000,Doddanekkundi,Registered
+20769678,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 11:42:00.000000000,Thanisandra,Registered
+20769657,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 11:31:00.000000000,Sampangiram Nagar,Registered
+20769622,Drainage,Road Maintenance(Engg),water stagnation,2025-06-18 11:15:00.000000000,Sudam Nagar,Registered
+20769541,Drainage,Storm  Water Drain(SWD),Sewerage water left in SWD,2025-06-18 10:49:00.000000000,Kengeri,Registered
+20769532,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 10:45:00.000000000,Vasanthapura,Closed
+20769528,Drainage,Storm  Water Drain(SWD),Sewerage water left in SWD,2025-06-18 10:43:00.000000000,Doddanekkundi,Registered
+20769522,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 10:39:00.000000000,Koramangala,Registered
+20769505,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 10:30:00.000000000,Nagarabhavi,Registered
+20770372,Drainage,Road Maintenance(Engg),water stagnation,2025-06-18 09:51:00.000000000,Rajarajeshwari Nagar,Registered
+20770363,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 09:37:00.000000000,Shettyhalli,Registered
+20769417,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 09:36:00.000000000,HAL Airport,Closed
+20769416,Drainage,Road Maintenance(Engg),water stagnation,2025-06-18 09:35:00.000000000,HAL Airport,Closed
+20769397,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 09:24:00.000000000,Basavanapura,Registered
+20769370,Drainage,Road Maintenance(Engg),water stagnation,2025-06-18 09:09:00.000000000,Bharathi Nagar,Registered
+20770331,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 09:01:00.000000000,Nandini Layout,Registered
+20769360,Drainage,Storm  Water Drain(SWD),Maintenance of SWD,2025-06-18 09:01:00.000000000,Peenya Industrial Area,Registered
+20770329,Drainage,Storm  Water Drain(SWD),Maintenance of SWD,2025-06-18 09:00:00.000000000,Bapuji Nagar,Registered
+20769345,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 08:50:00.000000000,Marappana Palya,Registered
+20770297,Drainage,Storm  Water Drain(SWD),Sewerage water left in SWD,2025-06-18 08:37:00.000000000,Doddanekkundi,Registered
+20769315,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 08:26:00.000000000,Doddabommasandra,Registered
+20770269,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 08:09:00.000000000,Bellandur,Registered
+20769294,Drainage,Storm  Water Drain(SWD),Sewerage water left in SWD,2025-06-18 08:03:00.000000000,Marenahalli,Registered
+20770237,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 07:43:00.000000000,Doddabommasandra,Registered
+20770145,Drainage,Storm  Water Drain(SWD),Sewerage water left in SWD,2025-06-18 06:29:00.000000000,HBR Layout,Registered
+20770125,Drainage,Storm  Water Drain(SWD),Maintenance of SWD,2025-06-18 06:08:00.000000000,Ramamurthy Nagar,Registered
+20770118,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 06:00:00.000000000,Begur,Registered
+20770109,Drainage,Road Maintenance(Engg),water stagnation,2025-06-18 05:54:00.000000000,Thanisandra,Registered
+20770105,Drainage,Road Maintenance(Engg),water stagnation,2025-06-18 05:48:00.000000000,Laggere,Registered
+20770095,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 05:34:00.000000000,Thanisandra,Registered
+20770093,Drainage,Road Maintenance(Engg),water stagnation,2025-06-18 05:29:00.000000000,Doddanekkundi,Registered
+20770085,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 05:22:00.000000000,Ullalu,Registered
+20770080,Drainage,Road Maintenance(Engg),water stagnation,2025-06-18 05:13:00.000000000,Deepanjali Nagar,Registered
+20770078,Drainage,Road Maintenance(Engg),water stagnation,2025-06-18 05:10:00.000000000,Deepanjali Nagar,Registered
+20770065,Drainage,Road Maintenance(Engg),water stagnation,2025-06-18 04:59:00.000000000,Doddanekkundi,Registered
+20770037,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 04:43:00.000000000,Byatarayanapura,Registered
+20770034,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 04:42:00.000000000,Doddabommasandra,Registered
+20769955,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 03:12:00.000000000,Kadugodi,Registered
+20769936,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 02:56:00.000000000,H.M.T,Registered
+20769911,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 02:30:00.000000000,Bellandur,Registered
+20769887,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 01:57:00.000000000,Varthur,Registered
+20769878,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 01:53:00.000000000,Varthur,Registered
+20769849,Drainage,Storm  Water Drain(SWD),Maintenance of SWD,2025-06-18 01:34:00.000000000,Byatarayanapura,Registered
+20769832,Drainage,Road Maintenance(Engg),Road side drains,2025-06-18 01:27:00.000000000,Hemmigepura,Registered
+20768546,Drainage,Road Maintenance(Engg),Road side drains,2025-06-17 12:58:00.000000000,K.R.Puram,Registered
+20768502,Drainage,Road Maintenance(Engg),Road side drains,2025-06-17 12:26:00.000000000,Garudacharpalya,Registered
+20768485,Drainage,Storm  Water Drain(SWD),Maintenance of SWD,2025-06-17 12:12:00.000000000,Yelachenahalli,Registered
+20768385,Drainage,Road Maintenance(Engg),Road side drains,2025-06-17 11:22:00.000000000,Laggere,Registered
+20768360,Drainage,Storm  Water Drain(SWD),Garbage thrown in storm water drain,2025-06-17 11:10:00.000000000,Hagadooru,Registered
+20769203,Drainage,Road Maintenance(Engg),Road side drains,2025-06-17 10:49:00.000000000,Bellandur,Closed
+20768188,Drainage,Road Maintenance(Engg),Road side drains,2025-06-17 09:50:00.000000000,Bilekahalli,Closed
+20769159,Drainage,Storm  Water Drain(SWD),Maintenance of SWD,2025-06-17 09:47:00.000000000,Ramamurthy Nagar,Registered
+20771028,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:59:00.000000000,Banaswadi,Registered
+20771026,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:58:00.000000000,Jnanabharathi Ward,Registered
+20771009,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:46:00.000000000,Hoodi,Registered
+20771005,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:43:00.000000000,Ganga Nagar,Registered
+20770999,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:38:00.000000000,Sanjay Nagar,Registered
+20770983,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:29:00.000000000,Chowdeshwari Ward,Closed
+20770973,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:25:00.000000000,Doddanekkundi,Registered
+20770970,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:24:00.000000000,Neelasandra,Registered
+20770966,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:23:00.000000000,Shettyhalli,In Progress
+20770961,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:21:00.000000000,Jnanabharathi Ward,Registered
+20770958,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:20:00.000000000,Uttarahalli,In Progress
+20770956,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:18:00.000000000,Horamavu,Registered
+20770953,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:17:00.000000000,Vasanthapura,Closed
+20770942,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:12:00.000000000,Horamavu,Registered
+20770943,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:12:00.000000000,Vijay Nagar,In Progress
+20770941,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:10:00.000000000,J.P.Nagar,In Progress
+20770939,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:08:00.000000000,Chikpete,Registered
+20770931,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:07:00.000000000,Jnanabharathi Ward,Registered
+20770930,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:06:00.000000000,Madiwala,In Progress
+20770925,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:04:00.000000000,Dodda Bidarkallu,Registered
+20770922,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:04:00.000000000,Kuvempu Nagar,Closed
+20770913,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 12:00:00.000000000,Chikkalasandra,In Progress
+20770906,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:55:00.000000000,Hoysala Nagar,Registered
+20770889,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:43:00.000000000,BTM Layout,In Progress
+20770890,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:43:00.000000000,Gayathri Nagar,Registered
+20770885,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:41:00.000000000,Chikkalasandra,In Progress
+20770880,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:38:00.000000000,Horamavu,Registered
+20770875,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:36:00.000000000,Kodigehalli,Closed
+20770863,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:33:00.000000000,HBR Layout,Registered
+20770861,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:31:00.000000000,Ullalu,Registered
+20770859,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:30:00.000000000,Jakkur,Closed
+20770852,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:28:00.000000000,Kempegowda Ward,Registered
+20770847,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:25:00.000000000,Byatarayanapura,Closed
+20770846,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:24:00.000000000,Sarakki,In Progress
+20770841,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:22:00.000000000,Jnanabharathi Ward,Registered
+20770835,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:21:00.000000000,Banaswadi,Registered
+20770831,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:18:00.000000000,Herohalli,Closed
+20770832,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:18:00.000000000,Horamavu,Registered
+20770830,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:17:00.000000000,Kodigehalli,Closed
+20770823,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:15:00.000000000,Nandini Layout,Registered
+20770822,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:15:00.000000000,Ramamurthy Nagar,Registered
+20770820,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:14:00.000000000,Byatarayanapura,Registered
+20770813,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:10:00.000000000,Hemmigepura,Closed
+20770812,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:10:00.000000000,Hemmigepura,Closed
+20770809,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:07:00.000000000,Ramamurthy Nagar,Registered
+20770805,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:05:00.000000000,Vishwanathnagenahalli,Closed
+20770795,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 11:02:00.000000000,Byatarayanapura,Registered
+20770786,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:58:00.000000000,Jalahalli,Registered
+20770781,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:55:00.000000000,Lakkasandra,In Progress
+20770775,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:47:00.000000000,Thanisandra,Closed
+20770767,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:41:00.000000000,BTM Layout,In Progress
+20771690,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:39:00.000000000,Jagajeevanram Nagar,Registered
+20770763,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:38:00.000000000,Dodda Bidarkallu,Registered
+20770760,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:37:00.000000000,Vidyapeetha,In Progress
+20771689,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:36:00.000000000,Kammanahalli,Registered
+20771687,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:34:00.000000000,Gandhi Nagar,Registered
+20770752,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:34:00.000000000,Basaveshwara Nagar,Registered
+20771685,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:31:00.000000000,Jogupalya,Registered
+20771683,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:30:00.000000000,Shanthi Nagar,Registered
+20771684,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:30:00.000000000,Vijanapura,Registered
+20770736,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:28:00.000000000,Basavanagudi,In Progress
+20770735,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:26:00.000000000,BTM Layout,In Progress
+20770734,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:25:00.000000000,Dattathreya Temple,Registered
+20770733,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:25:00.000000000,Jeevanbhima Nagar,Registered
+20770728,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:23:00.000000000,Singasandra,In Progress
+20770729,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:23:00.000000000,Herohalli,Closed
+20770720,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:21:00.000000000,Dodda Bidarkallu,Registered
+20770723,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:21:00.000000000,Horamavu,Registered
+20771680,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:20:00.000000000,Kengeri,Registered
+20770719,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:20:00.000000000,Ramamurthy Nagar,Registered
+20771676,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:16:00.000000000,Shankaramata,Registered
+20771674,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:14:00.000000000,Giri Nagar,Registered
+20770706,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:14:00.000000000,Horamavu,Registered
+20771673,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:13:00.000000000,Begur,Registered
+20770703,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:12:00.000000000,Padmanabha Nagar,In Progress
+20771670,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:10:00.000000000,Byatarayanapura,Registered
+20771669,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:10:00.000000000,Doddanekkundi,Registered
+20770698,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:07:00.000000000,Hombegowda Nagar,Closed
+20770694,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:06:00.000000000,Vidyaranyapura,Closed
+20771660,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:04:00.000000000,Gottigere,Registered
+20771661,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:04:00.000000000,BTM Layout,Registered
+20770690,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:03:00.000000000,Sarakki,In Progress
+20770688,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:01:00.000000000,Herohalli,Closed
+20771658,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 10:00:00.000000000,Bellandur,Registered
+20771655,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 09:52:00.000000000,Basaveshwara Nagar,Registered
+20770676,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 09:51:00.000000000,Uttarahalli,Closed
+20771652,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 09:46:00.000000000,Vidyaranyapura,Registered
+20771651,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 09:45:00.000000000,Padarayanapura,Registered
+20770666,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 09:45:00.000000000,Kavalbyrasandra,Registered
+20770662,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 09:43:00.000000000,K.R.Puram,Registered
+20771647,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 09:36:00.000000000,Sanjay Nagar,Registered
+20771645,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 09:34:00.000000000,Benniganahalli,Registered
+20770644,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 09:30:00.000000000,Koramangala,Closed
+20771643,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 09:29:00.000000000,Herohalli,Registered
+20771640,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 09:25:00.000000000,BTM Layout,Registered
+20771637,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 09:20:00.000000000,Chikkalasandra,Registered
+20771636,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 09:19:00.000000000,Bagalagunte,Registered
+20771635,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 09:19:00.000000000,Basavanagudi,Registered
+20771633,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 09:18:00.000000000,Sarakki,Registered
+20771631,Broken Streetlight,Electrical,Street Light Not Working,2025-06-19 09:17:00.000000000,Hosahalli,Registered
+20770482,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-19 06:39:00.000000000,Giri Nagar,Registered
+20771194,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-19 03:00:00.000000000,Cottonpet,Registered
+20770426,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-18 10:54:00.000000000,Arakere,Registered
+20768756,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-17 04:05:00.000000000,Shanthala Nagar,Non Relevant
+20767891,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-16 09:12:00.000000000,Vignana Nagar,Closed
+20766757,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-16 09:00:00.000000000,Doddanekkundi,Registered
+20764689,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-14 02:01:00.000000000,Madiwala,Closed
+20762532,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-12 12:48:00.000000000,Gandhi Nagar,Registered
+20762639,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-12 02:00:00.000000000,Bellandur,Registered
+20761862,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-11 09:08:00.000000000,Ramamurthy Nagar,Registered
+20760722,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-11 08:34:00.000000000,Kadugodi,Registered
+20760015,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-10 02:42:00.000000000,Shettyhalli,Registered
+20758169,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-09 09:56:00.000000000,Yadiyuru,Non Relevant
+20759146,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-09 09:16:00.000000000,Basavanagudi,Non Relevant
+20759112,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-09 08:43:00.000000000,Mangammanapalya,Non Relevant
+20757987,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-09 04:50:00.000000000,Arakere,Registered
+20757658,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-08 04:14:00.000000000,Arakere,Non Relevant
+20757580,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-08 01:26:00.000000000,Singasandra,Non Relevant
+20757163,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-07 09:16:00.000000000,Jakkur,Registered
+20755627,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-06 11:02:00.000000000,Marappana Palya,Non Relevant
+20753533,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-03 07:04:00.000000000,HAL Airport,Registered
+20753465,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-03 05:55:00.000000000,Varthur,Registered
+20753406,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-03 04:39:00.000000000,HSR Layout,Non Relevant
+20753329,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-03 03:01:00.000000000,Begur,Non Relevant
+20752755,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-02 11:33:00.000000000,Vasanthapura,Closed
+20751937,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-02 10:01:00.000000000,Gottigere,ReOpen
+20752509,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-02 07:01:00.000000000,Kempegowda Ward,Registered
+20752790,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-02 06:13:00.000000000,Bilekahalli,Non Relevant
+20752395,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-06-02 04:15:00.000000000,Kadugodi,Registered
+20751169,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-31 11:19:00.000000000,Devarajeevanahalli,Non Relevant
+20748265,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-28 06:44:00.000000000,Herohalli,Non Relevant
+20745527,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-26 08:57:00.000000000,Jakkur,Non Relevant
+20744754,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-25 07:26:00.000000000,Kadugodi,Registered
+20743835,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-24 08:10:00.000000000,Kengeri,Non Relevant
+20744524,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-24 06:53:00.000000000,Byrasandra,Non Relevant
+20744230,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-24 01:11:00.000000000,Byrasandra,Non Relevant
+20743691,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-23 09:09:00.000000000,Hemmigepura,Non Relevant
+20742775,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-23 08:01:00.000000000,Shakambari Nagar,Non Relevant
+20741786,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-22 09:55:00.000000000,Kottigepalya,Closed
+20740620,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-21 11:11:00.000000000,Kavalbyrasandra,Non Relevant
+20741428,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-21 08:32:00.000000000,Byatarayanapura,Registered
+20739653,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-20 12:48:00.000000000,HAL Airport,Closed
+20739831,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-20 03:05:00.000000000,Basaveshwara Nagar,Closed
+20739814,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-20 02:47:00.000000000,Kottigepalya,Closed
+20739101,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-20 01:25:00.000000000,Madiwala,Closed
+20738302,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-19 12:19:00.000000000,Gandhi Nagar,Registered
+20738108,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-19 10:51:00.000000000,Horamavu,Closed
+20737728,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-19 06:46:00.000000000,Kodigehalli,Registered
+20738840,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-19 06:27:00.000000000,Thanisandra,Closed
+20736945,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-18 12:43:00.000000000,Muneshwara Nagar,Non Relevant
+20736940,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-18 12:20:00.000000000,Muneshwara Nagar,Non Relevant
+20737529,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-18 10:12:00.000000000,Muneshwara Nagar,Non Relevant
+20736380,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-17 10:31:00.000000000,Shanthala Nagar,Non Relevant
+20736369,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-17 10:13:00.000000000,Jakkur,Registered
+20736347,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-17 09:48:00.000000000,Singasandra,Non Relevant
+20736820,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-17 07:42:00.000000000,Kavalbyrasandra,Non Relevant
+20736666,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-17 03:58:00.000000000,H.M.T,Non Relevant
+20736535,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-17 01:21:00.000000000,Hemmigepura,ReOpen
+20735732,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-16 11:48:00.000000000,Vishwanathnagenahalli,Closed
+20735946,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-16 04:13:00.000000000,Thanisandra,Closed
+20734592,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-15 07:31:00.000000000,Doddanekkundi,Closed
+20733672,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-14 08:49:00.000000000,HBR Layout,Closed
+20734283,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-14 06:24:00.000000000,Bellandur,Registered
+20734144,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-14 03:59:00.000000000,Bellandur,Registered
+20734038,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-14 02:08:00.000000000,Bellandur,Registered
+20734021,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-14 01:44:00.000000000,Hemmigepura,Non Relevant
+20733383,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-13 07:27:00.000000000,Uttarahalli,Closed
+20732123,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-12 11:37:00.000000000,Hoodi,Closed
+20731846,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-11 11:32:00.000000000,K.R.Puram,Non Relevant
+20731497,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-11 10:05:00.000000000,Horamavu,Closed
+20731151,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-10 02:11:00.000000000,Singasandra,Non Relevant
+20730243,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-09 08:34:00.000000000,Radhakrishna Temple,Closed
+20729583,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-08 08:51:00.000000000,Kottigepalya,Closed
+20727287,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-05 11:01:00.000000000,Shettyhalli,Non Relevant
+20727711,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-05 07:52:00.000000000,Jnanabharathi Ward,Non Relevant
+20726056,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-03 01:33:00.000000000,Hemmigepura,Closed
+20725466,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-02 05:17:00.000000000,Bellandur,Closed
+20724862,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-01 08:43:00.000000000,Horamavu,ReOpen
+20724861,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-01 08:42:00.000000000,Ramamurthy Nagar,Closed
+20724429,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-01 08:34:00.000000000,Marathalli,Registered
+20724723,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-05-01 05:03:00.000000000,Someshwara,Non Relevant
+20723122,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-04-29 09:15:00.000000000,Horamavu,Closed
+20723044,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-04-29 07:35:00.000000000,Begur,Non Relevant
+20722299,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-04-28 06:11:00.000000000,Hongasandra,Closed
+20722709,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-04-28 04:11:00.000000000,Gottigere,Closed
+20720766,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-04-25 05:05:00.000000000,Herohalli,Non Relevant
+20720672,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-04-25 03:24:00.000000000,Banashankari Temple Ward,Non Relevant
+20719475,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-04-24 10:55:00.000000000,Vishwanathnagenahalli,Closed
+20719457,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-04-24 10:44:00.000000000,Herohalli,Non Relevant
+20719710,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-04-24 02:59:00.000000000,Doddanekkundi,Non Relevant
+20719221,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-04-23 09:47:00.000000000,Horamavu,Closed
+20718327,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-04-22 08:58:00.000000000,Vasanthapura,Closed
+20718309,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-04-22 08:35:00.000000000,Someshwara,Non Relevant
+20717616,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-04-22 08:18:00.000000000,Benniganahalli,Non Relevant
+20716989,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-04-21 11:05:00.000000000,Singasandra,Non Relevant
+20716962,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-04-21 10:45:00.000000000,Jakkur,Closed
+20716900,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-04-21 09:51:00.000000000,Chikpete,Non Relevant
+20717379,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-04-21 07:18:00.000000000,Byatarayanapura,Closed
+20715721,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-04-19 10:22:00.000000000,Singasandra,Non Relevant
+20716051,Water Leakage,Road Maintenance(Engg),water leakage on road,2025-04-19 05:43:00.000000000,Herohalli,Non Relevant
+20771029,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:59:00.000000000,Giri Nagar,Registered
+20771025,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage vehicle not arrived,2025-06-19 12:57:00.000000000,Singasandra,In Progress
+20771023,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dumping in vacant sites,2025-06-19 12:55:00.000000000,Kushal Nagar,Registered
+20771017,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:51:00.000000000,Rajarajeshwari Nagar,Registered
+20771016,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:50:00.000000000,Shakambari Nagar,Closed
+20771014,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dumping in vacant sites,2025-06-19 12:48:00.000000000,Jayangar,Registered
+20771013,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:47:00.000000000,Varthur,Registered
+20771010,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:46:00.000000000,Benniganahalli,Registered
+20771008,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage vehicle not arrived,2025-06-19 12:45:00.000000000,Jeevanbhima Nagar,Registered
+20770463,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:44:00.000000000,Yelachenahalli,Closed
+20771007,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:44:00.000000000,Sunkenahalli,Registered
+20771004,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dumping in vacant sites,2025-06-19 12:43:00.000000000,Kacharakanahalli,Registered
+20771002,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:41:00.000000000,Begur,In Progress
+20770462,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:41:00.000000000,Shanthi Nagar,Closed
+20771001,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:40:00.000000000,Nagarabhavi,Registered
+20771000,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:39:00.000000000,Anjanapur,Registered
+20770998,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:36:00.000000000,Devarajeevanahalli,Registered
+20770997,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:36:00.000000000,Vasanthapura,Registered
+20770996,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:35:00.000000000,Benniganahalli,Registered
+20770995,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:35:00.000000000,Gurappanapalya,Registered
+20770993,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:34:00.000000000,Arakere,Registered
+20770992,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:34:00.000000000,Konanakunte,In Progress
+20770990,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dumping in vacant sites,2025-06-19 12:33:00.000000000,Hoysala Nagar,Registered
+20770989,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage vehicle not arrived,2025-06-19 12:32:00.000000000,Yelachenahalli,Registered
+20770988,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage vehicle not arrived,2025-06-19 12:32:00.000000000,Vidyapeetha,Closed
+20770987,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:31:00.000000000,Benniganahalli,Registered
+20770986,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:31:00.000000000,Someshwara,Registered
+20770984,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:30:00.000000000,Vasanthapura,Closed
+20770982,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:29:00.000000000,Benniganahalli,Registered
+20770980,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:28:00.000000000,J.P.Nagar,Registered
+20770981,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage vehicle not arrived,2025-06-19 12:28:00.000000000,Yelachenahalli,Closed
+20770979,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:28:00.000000000,Attiguppe,Registered
+20770976,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:27:00.000000000,Hemmigepura,Registered
+20770978,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:27:00.000000000,Koramangala,Closed
+20770977,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:27:00.000000000,Doddanekkundi,Closed
+20770975,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage vehicle not arrived,2025-06-19 12:26:00.000000000,Jnanabharathi Ward,Registered
+20770974,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:26:00.000000000,Benniganahalli,Registered
+20770972,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:24:00.000000000,Benniganahalli,Registered
+20770971,Garbage Accumulation,Solid Waste (Garbage) Related,Sweeping not done,2025-06-19 12:24:00.000000000,Banaswadi,Registered
+20770969,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:23:00.000000000,Chowdeshwari Ward,Registered
+20770968,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:23:00.000000000,Vignana Nagar,Registered
+20770967,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:23:00.000000000,Banaswadi,Registered
+20770963,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:21:00.000000000,Ramamurthy Nagar,Registered
+20770960,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:21:00.000000000,Someshwara,Registered
+20770957,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:18:00.000000000,Chikpete,Closed
+20770954,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:17:00.000000000,Jeevanbhima Nagar,Registered
+20770955,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:17:00.000000000,Jayangar,Closed
+20770952,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage vehicle not arrived,2025-06-19 12:16:00.000000000,Dodda Bidarkallu,Registered
+20770951,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:15:00.000000000,Chowdeshwari Ward,Registered
+20770949,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage vehicle not arrived,2025-06-19 12:15:00.000000000,Pattabhiram Nagar,Closed
+20770948,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage vehicle not arrived,2025-06-19 12:15:00.000000000,Horamavu,Closed
+20770947,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:14:00.000000000,Lingarajapuram,Registered
+20770945,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:14:00.000000000,Dodda Bidarkallu,Registered
+20770944,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:14:00.000000000,Horamavu,Closed
+20770458,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:10:00.000000000,Yelachenahalli,Closed
+20770934,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:08:00.000000000,Bellandur,Registered
+20770932,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:08:00.000000000,Benniganahalli,Registered
+20770933,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:08:00.000000000,Benniganahalli,Registered
+20770938,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage nuisance while transporting,2025-06-19 12:08:00.000000000,J.P.Nagar,Registered
+20770937,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage nuisance while transporting,2025-06-19 12:08:00.000000000,Arakere,Registered
+20770935,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:08:00.000000000,Benniganahalli,Registered
+20770928,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:05:00.000000000,Sri Nagar,Closed
+20770926,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:05:00.000000000,Benniganahalli,Registered
+20770924,Garbage Accumulation,Solid Waste (Garbage) Related,Segregation of waste is not done,2025-06-19 12:04:00.000000000,J.P.Nagar,Registered
+20770921,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:04:00.000000000,Benniganahalli,Registered
+20770923,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:04:00.000000000,Chowdeshwari Ward,Registered
+20770919,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:03:00.000000000,Basavanapura,Closed
+20770918,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:03:00.000000000,Benniganahalli,Registered
+20770917,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage nuisance while transporting,2025-06-19 12:02:00.000000000,J.P.Nagar,Registered
+20770915,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:01:00.000000000,Benniganahalli,Registered
+20770916,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:01:00.000000000,Benniganahalli,Registered
+20770914,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 12:00:00.000000000,Benniganahalli,Registered
+20770912,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:59:00.000000000,Ramamurthy Nagar,Registered
+20770911,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:59:00.000000000,Benniganahalli,Registered
+20770909,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage vehicle not arrived,2025-06-19 11:58:00.000000000,Doddanekkundi,Registered
+20770907,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:56:00.000000000,HBR Layout,Registered
+20770903,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:54:00.000000000,Benniganahalli,Registered
+20770902,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:53:00.000000000,Jogupalya,Closed
+20770901,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage vehicle not arrived,2025-06-19 11:53:00.000000000,Bellandur,Closed
+20770898,Garbage Accumulation,Solid Waste (Garbage) Related,Sweeping not done,2025-06-19 11:50:00.000000000,Someshwara,Registered
+20770897,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:49:00.000000000,Benniganahalli,Registered
+20770896,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage vehicle not arrived,2025-06-19 11:48:00.000000000,Hagadooru,Closed
+20770895,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:48:00.000000000,Chowdeshwari Ward,Registered
+20770894,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:45:00.000000000,Benniganahalli,Registered
+20770893,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:45:00.000000000,Kadugodi,Closed
+20770891,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:43:00.000000000,Chokkasandra,Closed
+20770887,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:41:00.000000000,Jakkur,In Progress
+20770884,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:40:00.000000000,Jagajeevanram Nagar,Registered
+20770882,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:39:00.000000000,Vidyaranyapura,In Progress
+20770883,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:39:00.000000000,Doddanekkundi,Registered
+20770881,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:38:00.000000000,Jakkasandra,Closed
+20770878,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:37:00.000000000,Banaswadi,Registered
+20770874,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:36:00.000000000,Sudam Nagar,Registered
+20770873,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:35:00.000000000,Karisandra,Closed
+20770872,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:35:00.000000000,Jagajeevanram Nagar,Registered
+20770871,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:35:00.000000000,Arakere,Registered
+20770866,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:33:00.000000000,Dattathreya Temple,Registered
+20770865,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dumping in vacant sites,2025-06-19 11:33:00.000000000,Kavalbyrasandra,Registered
+20770864,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:33:00.000000000,Gottigere,Registered
+20770860,Garbage Accumulation,Solid Waste (Garbage) Related,Garbage dump,2025-06-19 11:31:00.000000000,Rajarajeshwari Nagar,Registered
